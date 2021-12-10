@@ -1,0 +1,21 @@
+.cal_table td{
+    min-width: 100px;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+}
+.cal-day{
+    height: 80px;
+}
+.cal_table tr:nth-child(1){
+    text-align: center;
+}
+.cal_table tr:nth-child(1){
+    background: #f3f3f3;
+}
+.cal_table tr > th:nth-child(1){
+    color: "#FF9090";
+}
+.cal_table th:nth-child(7){
+    color: "#7ED5E4";
+}
