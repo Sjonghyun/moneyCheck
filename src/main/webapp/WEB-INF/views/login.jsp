@@ -10,24 +10,24 @@
     <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
 
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="/resources/css/style.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
     <h3 class="omb_authTitle">Login or Sign up</h3>
     <div class="row omb_row-sm-offset-3 omb_socialButtons">
         <div class="col-xs-4 col-sm-2">
-            <a href="#" class="btn btn-lg btn-block omb_btn-facebook">
+            <a href="/oauth2/authorization/naver" role="button" class="btn btn-lg btn-block omb_btn-naver">
                 <span class="hidden-xs">naver</span>
             </a>
         </div>
         <div class="col-xs-4 col-sm-2">
-            <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
+            <a href="/oauth2/authorization/kakao" role="button" class="btn btn-lg btn-block omb_btn-kakao">
                 <span class="hidden-xs">kakao</span>
             </a>
         </div>
         <div class="col-xs-4 col-sm-2">
-            <a href="#" class="btn btn-lg btn-block omb_btn-google">
+            <a href="http://localhost:8080/auth/google" role="button" class="btn btn-lg btn-block omb_btn-google">
                 <span class="hidden-xs">Google+</span>
             </a>
         </div>
@@ -42,7 +42,7 @@
 
     <div class="row omb_row-sm-offset-3">
         <div class="col-xs-12 col-sm-6">
-            <form class="omb_loginForm" action="" autocomplete="off" method="POST">
+            <form class="omb_loginForm" action="/loginNormal" method="post">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                     <input type="text" class="form-control" name="username" placeholder="email address">
