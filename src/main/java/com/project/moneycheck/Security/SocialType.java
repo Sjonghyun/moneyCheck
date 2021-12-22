@@ -1,4 +1,4 @@
-package com.project.moneycheck.Security;
+package com.project.moneycheck.security;
 
 import lombok.AllArgsConstructor;
 

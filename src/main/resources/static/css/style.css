@@ -1,21 +1,143 @@
+*{
+    font-family: "Dongle script=latin rev=1";
+    color: #888888;
+}
+a ,.nav-link{
+    color: #888888;
+}
+a:hover ,.nav-link:hover,.nav-link:focus{
+    color: #D4D4D4;
+}
+
+nav{
+    background: #F0F0F0;
+}
+.text-center > .month-year-input{
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+    font-size: 23px;
+    font-weight: 500;
+}
+.text-center > #before, .text-center > #next{
+    border: none;
+    background: none;
+    width: 100px;
+    font-size: 18px;
+    font-weight: 500;
+}
+.text-center{
+    margin-top: 20px;
+}
+.calendar{
+    height: 90%;
+}
+
+
+.cal_table{
+    height: 80%
+}
 .cal_table td{
     min-width: 100px;
     text-overflow:ellipsis;
     overflow:hidden;
     white-space:nowrap;
 }
-.cal-day{
-    height: 80px;
+.cal_table td:nth-child(1) .cal-day{
+    color: #FF9090;
 }
+
 .cal_table tr:nth-child(1){
     text-align: center;
 }
-.cal_table tr:nth-child(1){
+.cal_table tr:nth-child(1) > th{
+    height: 42px;
     background: #f3f3f3;
 }
 .cal_table tr > th:nth-child(1){
-    color: "#FF9090";
+    color: #FF9090;
 }
 .cal_table th:nth-child(7){
-    color: "#7ED5E4";
+    /*color: #7ED5E4;*/
+    /*color: #9EC1D2;*/
+}
+.cal_table tr:nth-child(1) td{
+    color: #FF9090;
+}
+.cal_table tr:nth-child(7) td{
+    /*color: #7ED5E4;*/
+}
+.cal-schedule{
+    height: 90%;
+}
+.black{
+
+    height: 55px;
+}
+.last{
+    margin-left: 70px;
+}
+li.nav-item.insert_last{
+    margin-left: 313px;
+}
+.sidebar{
+    background: #f5f5f5;
+}
+img{
+    height: 33px;
+    width: 33px;
+    margin-left: 5px;
+}
+.sns_button{
+    position: relative;
+    text-align: center;
+    width: 45px;
+    cursor: pointer;
+    display: inline-block;
+}
+textarea{
+    width: 100%;
+    height: 50%;
+    border: 1px solid #dee2e6;
+    resize: none;
+}
+input[type=radio] {
+    opacity: 0;
+    padding: 5px;
+}
+.popup{
+    font-size: 14px;
+    height: 75%;
+}
+.insert_btn{
+    text-align: right;
+    margin-right: 20px;
+}
+insert_btn > button{
+    color: #7ED5E4;
+}
+#spend_table th, #income_table th{
+    background: #f3f3f3;
+}
+#spend_table tr:hover , #income_table tr:hover{
+    background: #f3f3f3;
+    color: #888888;
+}
+.insert-table{
+    /*font-size: 16px;*/
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.insert-table th{
+    font-size: 14px;
+}
+
+
+.insert-table td input{
+    width: 100%;
+    border: none;
+    font-size: 10.5px;
+    text-align: center;
 }

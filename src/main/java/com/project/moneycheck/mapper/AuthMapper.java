@@ -1,7 +1,7 @@
-package com.project.moneycheck.Mapper;
+package com.project.moneycheck.mapper;
 
-import com.project.moneycheck.Mapper.sql.SecuritySQL;
-import com.project.moneycheck.Security.AuthValue;
+import com.project.moneycheck.mapper.sql.SecuritySQL;
+import com.project.moneycheck.security.AuthValue;
 import org.apache.ibatis.annotations.*;
 
 @Mapper

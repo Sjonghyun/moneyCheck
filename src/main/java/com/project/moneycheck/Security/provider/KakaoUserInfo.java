@@ -1,5 +1,6 @@
-package com.project.moneycheck.Security.provider;
+package com.project.moneycheck.security.provider;
 
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
@@ -23,6 +24,11 @@ public class KakaoUserInfo implements OAuth2Info {
         return String.valueOf(this.attributes.get("id"));
     }
 
+    @Override
+    public String getNickName() {
+        HashMap<String, Object> properties = (HashMap<String, Object>) this.attributes.get("properties");
+        return (String) properties.get("nickname");
+    }
 
     @Override
     public String getEmail() {

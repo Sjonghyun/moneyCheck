@@ -1,9 +1,9 @@
-package com.project.moneycheck.Service;
+package com.project.moneycheck.service;
 
-import com.project.moneycheck.Mapper.AuthMapper;
-import com.project.moneycheck.Mapper.UsersMapper;
-import com.project.moneycheck.Security.AuthValue;
-import com.project.moneycheck.Security.PrincipalUser;
+import com.project.moneycheck.mapper.AuthMapper;
+import com.project.moneycheck.mapper.UsersMapper;
+import com.project.moneycheck.security.AuthValue;
+import com.project.moneycheck.security.PrincipalUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class AuthService {
     private final UsersMapper usersMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public int findPWByJuminNameEmail(String username, String name){
+    public int findPWByJuminNameEmail(String jumin, String username, String name){
         int isFind = 0;
         AuthValue authValue = authMapper.loadUserByName(username);
         if(authValue == null) {
@@ -25,11 +25,8 @@ public class AuthService {
 
         switch (authValue.getRole()){
             case "USER":
-                isFind = usersMapper.loadForFindWD(authValue, name);
+                isFind = usersMapper.loadForFindWD(authValue, name, jumin);
                 break;
-//            case "HOST":
-//                isFind = hostMapper.loadForFindWD(authValue, name, jumin);
-//                break;
         }
 
         if (isFind != 0){

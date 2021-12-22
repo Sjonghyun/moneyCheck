@@ -1,4 +1,4 @@
-package com.project.moneycheck.Security.provider;
+package com.project.moneycheck.security.provider;
 
 import lombok.NoArgsConstructor;
 
@@ -25,6 +25,10 @@ public class NaverUserInfo implements OAuth2Info {
         return (String) this.attributes.get("id");
     }
 
+    @Override
+    public String getNickName() {
+        return (String) this.attributes.get("name");
+    }
 
     @Override
     public String getEmail() {

@@ -27,7 +27,7 @@
             </a>
         </div>
         <div class="col-xs-4 col-sm-2">
-            <a href="http://localhost:8080/auth/google" role="button" class="btn btn-lg btn-block omb_btn-google">
+            <a href="/oauth2/authorization/google" role="button" class="btn btn-lg btn-block omb_btn-google">
                 <span class="hidden-xs">Google+</span>
             </a>
         </div>

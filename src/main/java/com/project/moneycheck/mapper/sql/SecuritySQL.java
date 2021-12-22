@@ -1,21 +1,24 @@
-package com.project.moneycheck.Mapper.sql;
+package com.project.moneycheck.mapper.sql;
 
-import com.project.moneycheck.Security.AuthValue;
+import com.project.moneycheck.security.AuthValue;
 import org.apache.ibatis.jdbc.SQL;
 
 public class SecuritySQL {
 
     private static final String TABLE = "SECURITY";
 
-    public String loadUserByName(String username){
-        String sql = new SQL().SELECT("*")
-                    .FROM(TABLE)
-                    .WHERE("USERNAME = #{username}")
-                    .toString();
-        return sql;
+//        �옉�꽦 諛⑸쾿�� �븘�옒 �럹�씠吏� 李몄“
+//    https://mybatis.org/mybatis-3/ko/statement-builders.html
+    public String loadUserByName(String username) {
+//    	System.out.println(username);
+        return new SQL()
+                .SELECT("*")
+                .FROM(TABLE)
+                .WHERE("USERNAME = #{username}")
+                .toString();
     }
-    public String insertAuthValue(AuthValue authValue) {
 
+    public String insertAuthValue(AuthValue authValue) {
         return new SQL()
                 .INSERT_INTO(TABLE)
                 .VALUES("USERNAME", "#{authValue.username}")
@@ -41,5 +44,4 @@ public class SecuritySQL {
                 .WHERE("PASSWORD = #{pwd}")
                 .toString();
     }
-
 }

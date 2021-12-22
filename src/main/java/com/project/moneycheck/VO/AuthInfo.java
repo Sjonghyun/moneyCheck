@@ -1,6 +1,6 @@
-package com.project.moneycheck.VO;
+package com.project.moneycheck.vo;
 
-import com.project.moneycheck.Security.AuthValue;
+import com.project.moneycheck.security.AuthValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

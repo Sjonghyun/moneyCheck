@@ -1,11 +1,11 @@
-package com.project.moneycheck.Security;
+package com.project.moneycheck.security;
 
-import com.project.moneycheck.Mapper.UsersMapper;
-import com.project.moneycheck.Security.provider.GoogleUserInfo;
-import com.project.moneycheck.Security.provider.KakaoUserInfo;
-import com.project.moneycheck.Security.provider.NaverUserInfo;
-import com.project.moneycheck.Security.provider.OAuth2Info;
-import com.project.moneycheck.VO.UsersVO;
+import com.project.moneycheck.mapper.UsersMapper;
+import com.project.moneycheck.security.provider.GoogleUserInfo;
+import com.project.moneycheck.security.provider.KakaoUserInfo;
+import com.project.moneycheck.security.provider.NaverUserInfo;
+import com.project.moneycheck.security.provider.OAuth2Info;
+import com.project.moneycheck.vo.UsersVO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -22,10 +22,12 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         String registrationID = userRequest.getClientRegistration().getRegistrationId();
+
+        System.out.println("@@@@@@@@@@@@@@@@@" + userRequest.toString());
         OAuth2User oAuth2User = super.loadUser(userRequest);
+        System.out.println("@@@@@@@@@@@@@@@@@" + registrationID);
 
         OAuth2Info oAuth2Info = null;
-
         switch(registrationID) {
             case "google":
                 oAuth2Info = new GoogleUserInfo(oAuth2User.getAttributes());
@@ -39,13 +41,11 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         String snsID = oAuth2Info.getProvider()+"_"+oAuth2Info.getProviderID();
-
         System.out.println("snsID: "+snsID);
-
         UsersVO userInfo = usersMapper.loadUserBySNS(snsID);
 
         if (userInfo == null) {
-            userInfo = new UsersVO(oAuth2Info.getEmail());
+            userInfo = new UsersVO(oAuth2Info.getNickName(), oAuth2Info.getEmail());
             usersMapper.insertEmptyUser(userInfo);
             usersMapper.insertBySNS(snsID, userInfo);
         }
