@@ -1,4 +1,4 @@
-package com.project.moneycheck.vo;
+package com.project.moneycheck.dto;
 
 import com.project.moneycheck.security.AuthValue;
 import lombok.AllArgsConstructor;

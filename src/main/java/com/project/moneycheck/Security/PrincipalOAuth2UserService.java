@@ -1,11 +1,12 @@
 package com.project.moneycheck.security;
 
+import com.project.moneycheck.dto.Users;
+import com.project.moneycheck.dto.UsersVO;
 import com.project.moneycheck.mapper.UsersMapper;
 import com.project.moneycheck.security.provider.GoogleUserInfo;
 import com.project.moneycheck.security.provider.KakaoUserInfo;
 import com.project.moneycheck.security.provider.NaverUserInfo;
 import com.project.moneycheck.security.provider.OAuth2Info;
-import com.project.moneycheck.vo.UsersVO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -23,7 +24,6 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         String registrationID = userRequest.getClientRegistration().getRegistrationId();
 
-        System.out.println("@@@@@@@@@@@@@@@@@" + userRequest.toString());
         OAuth2User oAuth2User = super.loadUser(userRequest);
         System.out.println("@@@@@@@@@@@@@@@@@" + registrationID);
 
@@ -52,7 +52,6 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
 
         AuthValue authValue = new AuthValue();
         authValue.setUsername(oAuth2Info.getEmail());
-        authValue.setRole("USER");
         userInfo.setAuthValue(authValue);
 
         return new PrincipalUser(userInfo, oAuth2User.getAttributes());

@@ -1,10 +1,10 @@
 package com.project.moneycheck.Controller;
 
 import com.project.moneycheck.dto.Spending;
-import com.project.moneycheck.dto.Users;
 import com.project.moneycheck.mapper.SpendingMapper;
-import com.project.moneycheck.security.AuthValue;
 import com.project.moneycheck.service.SpendingService;
+import com.project.moneycheck.util.ExcelRead;
+import com.project.moneycheck.util.ExcelReadOption;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -34,6 +36,7 @@ public class SpendingController {
 
     @PostMapping("/insert_spending.do")
     public String spending_insert(@RequestParam("u_no")String u_no, Spending spending){
+        System.out.println(spending.toString());
 
         spendingService.insert_spending(spending);
 
@@ -49,7 +52,7 @@ public class SpendingController {
 
     @ResponseBody
     @PostMapping(value = "/excelUpload.do")
-    public String excelUpload(MultipartHttpServletRequest request) throws Exception{
+    public Map<String,Object> excelUpload(MultipartHttpServletRequest request, @RequestParam("u_no")String u_no) throws Exception{
 
         MultipartFile excelFile =request.getFile("excelFile");
 
@@ -60,21 +63,42 @@ public class SpendingController {
         }
         File destFile = new File("C:\\upload\\"+excelFile.getOriginalFilename());
         try{
-            excelFile.transferTo(destFile);
+            excelFile.
+                    transferTo(destFile);
         }catch(IllegalStateException | IOException e){
 //            throw new RuntimeException(e.getMessage(),e);
             e.printStackTrace();
         }
 
-        spendingService.excelUpload(destFile);
+        ExcelReadOption excelReadOption = new ExcelReadOption();
 
-        destFile.delete(); //업로드 진행 후 삭제
+        excelReadOption.setFilePath(destFile.getAbsolutePath()); // 파일경로
+        excelReadOption.setOutputColumns("A","B","C","D","E","F"); //추출할 칼럼명
+//        excelReadOption.setOutputColumns("A","B","C"); //추출할 칼럼명
 
-        return "/main";
+        excelReadOption.setStartRow(2); //시작행
+
+        List<Map<String,String>> excelContent = ExcelRead.read(excelReadOption);
+
+        Map<String,Object> paramMap = new HashMap<String,Object>();
+        paramMap.put("excelContent",excelContent);
+        paramMap.put("u_no",u_no);
+        System.out.println(paramMap);
+
+        try {
+            spendingMapper.excelUpload(paramMap);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        destFile.delete(); //업로드 진행 후 삭제
+
+        return paramMap;
+
     }
 
     @RequestMapping("/excel")
-    public String excel(){
+    public String excel(@RequestParam("u_no")String u_no){
 
         return "/excel";
     }

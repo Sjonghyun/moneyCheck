@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,34 +34,4 @@ public class SpendingService {
 
         return spendingMapper.spendCount(u_no, date);
     }
-
-    public List<Map<String, String>> excelUpload(File destFile) throws Exception{
-
-        ExcelReadOption excelReadOption = new ExcelReadOption();
-
-        excelReadOption.setFilePath(destFile.getAbsolutePath()); // 파일경로
-//        excelReadOption.setOutputColumns("A","B","C","D","E","F"); //추출할 칼럼명
-        excelReadOption.setOutputColumns("A","B","C"); //추출할 칼럼명
-
-        excelReadOption.setStartRow(2); //시작행
-
-        List<Map<String,String>> excelContent = ExcelRead.read(excelReadOption);
-
-
-
-        for(Map<String, String> article: excelContent){
-            System.out.print(article.get("A")+" ");
-            System.out.print(article.get("B")+" ");
-            System.out.print(article.get("C")+" ");
-//            System.out.print(article.get("D")+" ");
-//            System.out.print(article.get("E")+" ");
-//            System.out.print(article.get("F")+" ");
-            System.out.println();
-        }
-        System.out.println(excelContent.toArray());
-
-        return spendingMapper.excelUpload(destFile);
-    }
-
-
 }

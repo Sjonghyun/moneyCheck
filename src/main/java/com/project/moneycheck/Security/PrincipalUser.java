@@ -1,6 +1,6 @@
 package com.project.moneycheck.security;
 
-import com.project.moneycheck.vo.AuthInfo;
+import com.project.moneycheck.dto.AuthInfo;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,11 +19,11 @@ public class PrincipalUser implements UserDetails, OAuth2User {
 //    private UsersVO user;
     private Map<String, Object> attributes;
 
-//    일반 로그인을 위한 생성자
-    public PrincipalUser(AuthValue authValue, AuthInfo authInfo) {
-        this.authInfo = authInfo;
-        this.authInfo.setAuthValue(authValue);
-    }
+////    일반 로그인을 위한 생성자
+//    public PrincipalUser(AuthValue authValue, AuthInfo authInfo) {
+//        this.authInfo = authInfo;
+//        this.authInfo.setAuthValue(authValue);
+//    }
 
 //    OAuth2User 로그인을 위한 생성자
     public PrincipalUser(AuthInfo authInfo, Map<String, Object> attributes) {
@@ -59,7 +59,8 @@ public class PrincipalUser implements UserDetails, OAuth2User {
 
     @Override
     public String getPassword() {
-        return authInfo.getAuthValue().getPassword();
+//        return authInfo.getAuthValue().getPassword();
+        return "";
     }
 
     @Override

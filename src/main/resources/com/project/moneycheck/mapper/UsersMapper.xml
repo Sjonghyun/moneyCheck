@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.moneycheck.mapper.UsersMapper">
+<!--    <select id="loadUserBySecurityNo" >-->
+<!--        SELECT * FROM USERS WHERE SC_NO = #{sc_no}-->
+<!--    </select>-->
+    <select id="loadUserBySNS" resultType="UsersVO">
+        SELECT USERS.* FROM USERS
+                                JOIN SNS_USERS SNS ON USERS.U_NO = SNS.U_NO
+        WHERE SNS.ID = #{snsID}
+    </select>
+    <insert id="insertBySNS" parameterType="Map" >
+        INSERT INTO SNS_USERS (ID, U_NO) VALUES (#{snsID},#{user.u_no})
+    </insert>
+    <insert id="insertEmptyUser" useGeneratedKeys="true" keyProperty="user.u_no" parameterType="Map" >
+        insert into USERS (U_MAIL, U_NAME)
+        VALUES(#{user.u_mail},#{user.u_name})
+    </insert>
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="user.u_no" parameterType="Map">
+        insert into USERS (SC_NO, U_MAIL, U_NAME)
+        VALUES(#{authValue.sc_no},#{authValue.username},#{user.u_name})
+    </insert>
+</mapper>

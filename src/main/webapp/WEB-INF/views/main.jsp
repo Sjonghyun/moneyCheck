@@ -91,7 +91,7 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/excel">거래내역 엑셀 업로드</a>
+                    <a class="nav-link active" href="/excel?u_no=${user.u_no}">거래내역 엑셀 업로드</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">보고서(그래프)</a>

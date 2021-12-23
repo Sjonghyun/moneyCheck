@@ -5,6 +5,8 @@ import org.apache.poi.ss.util.CellReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExcelCellRef {
     /**
@@ -28,6 +30,7 @@ public class ExcelCellRef {
     }
 
     public static String getValue(Cell cell) {
+        Map<Object,Object> map = new HashMap<>();
         String value = "";
 
         if(cell == null) {

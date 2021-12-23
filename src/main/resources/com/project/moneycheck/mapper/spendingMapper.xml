@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.moneycheck.mapper.SpendingMapper">
+    <select id="spendingList" resultType="Spending" parameterType="int">
+        SELECT * FROM SPENDING WHERE U_NO = #{U_NO} ORDER BY SP_DATE
+    </select>
+    <insert id="insert_spending" useGeneratedKeys="true"  keyProperty="spending.sp_no" parameterType="Map" >
+        INSERT INTO SPENDING
+            (SP_DATE,SP_USED,SP_MONEY,SP_ACCOUNT,SP_CATEGORY,SP_MEMO,U_NO)
+            VALUES(#{spending.sp_date},#{spending.sp_used},#{spending.sp_money}
+                   ,#{spending.sp_account},#{spending.sp_category},#{spending.sp_memo},#{spending.u_no})
+    </insert>
+    <delete id="delete_spending">
+        DELETE FROM SPENDING WHERE SP_NO = #{sp_no}
+    </delete>
+    <insert id="excelUpload" parameterType="Map" >
+        INSERT INTO SPENDING(SP_DATE, SP_USED, SP_MONEY,SP_ACCOUNT, SP_CATEGORY, SP_MEMO,U_NO)
+        VALUES
+        <foreach collection="excelContent" item="item" separator=",">
+            (#{item.A},#{item.B},#{item.C},#{item.D},#{item.E},#{item.F},#{u_no})
+        </foreach>
+
+    </insert>
+</mapper>
