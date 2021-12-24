@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.moneycheck.mapper.ScheduleDao">
+    <insert id="schedule_add">
+        insert into schedule
+        values
+        (nextval(schedule_sq) ,#{schedule_num}, #{schedule_subject}, #{schedule_desc}, #{schedule_date}, #{schedule_share},#{schedule_mycolor})
+    </insert>
+
+    <sql id="schedule_cols">
+        (schedule_idx, schedule_num, schedule_subject, schedule_desc, schedule_date, schedule_share, schedule_mycolor)
+    </sql>
+    <select id="before_spending_add_search" resultType="int">
+        select count(*) from spending where SP_DATE = #{sp_date}
+    </select>
+    <select id="before_income_add_search" resultType="int">
+        select count(*) from income where IN_DATE = #{in_date}
+    </select>
+
+    <select id="before_schedule_add_search" resultType="int">
+
+        select count(*) from schedule where schedule_date = #{schedule_date}
+    </select>
+
+    <select id="schedule_list" resultType="ScheduleDto">
+
+        select * from schedule where schedule_date >= #{db_startDate} and #{db_endDate} >= schedule_date
+        order by schedule_date, schedule_num, schedule_idx
+    </select>
+
+
+    <!-- 리스트 가져오기 -->
+    <select id="get" resultType="ScheduleDto">
+    <![CDATA[
+        select * from schedule where schedule_date = #{schedule_date}
+        ]]>
+</select>
+    <update id="update">
+        update schedule
+        set schedule_num = #{schedule_num},
+            schedule_subject = #{schedule_subject},
+            schedule_desc = #{schedule_desc},
+            schedule_date=#{schedule_date},
+            schedule_share =#{schedule_share},
+            schedule_mycolor=#{schedule_mycolor}
+        where schedule_idx=#{schedule_idx}
+    </update>
+
+    <!-- 삭제하기 -->
+    <delete id="delete">
+        delete from schedule where schedule_idx=#{schedule_idx}
+    </delete>
+</mapper>

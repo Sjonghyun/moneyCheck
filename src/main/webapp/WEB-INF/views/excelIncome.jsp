@@ -8,7 +8,7 @@
 
 </head>
 <body>
-<form id="excelUploadForm" name="excelUploadForm" enctype="multipart/form-data" method="post" action= "/excelUpload.do">
+<form id="excelUploadForm" name="excelUploadForm" enctype="multipart/form-data" method="post" action= "/income_excelUpload.do">
     <div class="contents">
         <div>첨부파일은 한개만 등록 가능합니다.</div>
 

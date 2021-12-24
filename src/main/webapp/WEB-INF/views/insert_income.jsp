@@ -66,7 +66,7 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">엑셀넣기</a>
+                    <a class="nav-link active" href="/excelIncome?u_no=${param.u_no}">엑셀넣기</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">보고서(그래프)</a>

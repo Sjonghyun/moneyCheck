@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.moneycheck.mapper.IncomeMapper">
-    <select id="IncomeList" resultType="Spending" >
-        SELECT * FROM INCOME WHERE U_NO = #{U_NO} ORDER BY SP_DATE
+    <select id="IncomeList" resultType="Income" parameterType="int" >
+        SELECT * FROM INCOME WHERE U_NO = #{U_NO} ORDER BY IN_DATE
     </select>
-    <insert id="insert_income" useGeneratedKeys="true" keyProperty="boardId">
+    <insert id="insert_income" useGeneratedKeys="true" keyProperty="income.in_no">
         INSERT INTO INCOME
             (IN_DATE,IN_USED,IN_MONEY,IN_ACCOUNT,IN_CATEGORY,IN_MEMO,U_NO)
             VALUES (#{income.in_date},#{income.in_used},#{income.in_money}
@@ -16,11 +16,11 @@
     <delete id="delete_spending">
         DELETE FROM INCOME WHERE SP_NO = #{in_no}
     </delete>
-<!--    <insert id="excelUpload" parameterType="Spending">-->
-<!--        INSERT INTO INCOME(SP_DATE, SP_USED, SP_MONEY)-->
-<!--        VALUES-->
-<!--        <foreach collection="excelContent" item="item" separator=",">-->
-<!--            (#{item.A},#{item.B},#{item.C})-->
-<!--        </foreach>-->
-<!--    </insert>-->
+    <insert id="excelUpload" parameterType="Map">
+        INSERT INTO INCOME(IN_DATE, IN_USED, IN_MONEY,IN_ACCOUNT,IN_CATEGORY,IN_MEMO,U_NO)
+        VALUES
+        <foreach collection="excelContent" item="item" separator=",">
+            (#{item.A},#{item.B},#{item.C},#{item.D},#{item.E},#{item.F},#{u_no})
+        </foreach>
+    </insert>
 </mapper>

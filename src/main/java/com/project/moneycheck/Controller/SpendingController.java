@@ -97,9 +97,4 @@ public class SpendingController {
 
     }
 
-    @RequestMapping("/excel")
-    public String excel(@RequestParam("u_no")String u_no){
-
-        return "/excel";
-    }
 }
