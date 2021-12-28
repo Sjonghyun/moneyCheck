@@ -1,6 +1,8 @@
 package com.project.moneycheck.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.text.SimpleDateFormat;
@@ -10,6 +12,8 @@ import java.util.Map;
 
 @Data
 @ToString
+@Getter
+@Setter
 public class DateData {
     String year = "";
     String month = "";
@@ -18,9 +22,10 @@ public class DateData {
     String db_startDate = "";
     String db_endDate = "";
     ScheduleDto[] schedule_data_arr = new ScheduleDto[4];
+    Spending[] spending_data_arr = new Spending[4];
+
     // 날짜와 관련된 달력정보를 가지는 메서드
     public Map<String, Integer> today_info(DateData dateData) {
-
         // 날짜 캘린더 함수에 삽입
         Map<String, Integer> today_Data = new HashMap<String, Integer>();
         Calendar cal = Calendar.getInstance();
@@ -106,6 +111,15 @@ public class DateData {
             this.schedule_data_arr = schedule_data_arr;
         }
     }
+//    public DateData(String year, String month, String date, String value, Spending[] spending_data_arr) {
+//        if ((month != null && month != "") && (date != null && date != "")) {
+//            this.year = year;
+//            this.month = month;
+//            this.date = date;
+//            this.value = value;
+//            this.spending_data_arr = spending_data_arr;
+//        }
+//    }
 
     @Override
     public String toString() {

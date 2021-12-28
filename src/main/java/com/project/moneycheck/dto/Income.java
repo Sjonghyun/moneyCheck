@@ -17,5 +17,5 @@ public class Income {
     private String in_account;
     private String in_category;
     private String in_memo;
-    private int u_no;
+    private int book_no;
 }

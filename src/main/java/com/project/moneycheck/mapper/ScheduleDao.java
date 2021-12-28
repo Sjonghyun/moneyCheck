@@ -10,8 +10,7 @@ import java.util.ArrayList;
 public interface ScheduleDao {
     public int schedule_add(ScheduleDto scheduleDto);
     public int before_schedule_add_search(ScheduleDto scheduleDto);
-    public int before_spending_add_search(Spending spending);
-    public int before_income_add_search(Income income);
+
     public ArrayList<ScheduleDto> schedule_list(DateData dateData);
 
     /* 수정, 삭제를 위한 리스트 불러오기 */

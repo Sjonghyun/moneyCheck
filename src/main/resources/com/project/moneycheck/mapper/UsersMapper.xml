@@ -19,8 +19,21 @@
         insert into USERS (U_MAIL, U_NAME)
         VALUES(#{user.u_mail},#{user.u_name})
     </insert>
+    <update id="addBookno">
+        update users set BOOK_NO = #{user.u_no} where u_no = #{user.u_no}
+    </update>
+
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="user.u_no" parameterType="Map">
         insert into USERS (SC_NO, U_MAIL, U_NAME)
         VALUES(#{authValue.sc_no},#{authValue.username},#{user.u_name})
     </insert>
+    <update id="connectUsers">
+        update users set book_no = #{book_no} where u_mail = #{u_mail}
+    </update>
+<!--    <update id="disconnect">-->
+<!--        update users set book_no = #{u_no} where u_mail = #{u_mail}-->
+<!--    </update>-->
+    <select id="userMail" resultType="int">
+        SELECT COUNT(U_MAIL) FROM USERS WHERE U_MAIL = #{u_mail};
+    </select>
 </mapper>

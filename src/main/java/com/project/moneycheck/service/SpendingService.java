@@ -21,17 +21,17 @@ public class SpendingService {
         spendingMapper.insert_spending(spending);
     }
 
-    public List<Spending> spendingList(int u_no){
+    public List<Spending> spendingList(int book_no){
 
-        return spendingMapper.spendingList(u_no);
+        return spendingMapper.spendingList(book_no);
     }
 
     public void delete_spending(int sp_no){
         spendingMapper.delete_spending(sp_no);
     }
 
-    public String spendCount(int u_no, String date){
+    public int spendCount(int book_no, String date){
 
-        return spendingMapper.spendCount(u_no, date);
+        return spendingMapper.spendCount(book_no, date);
     }
 }

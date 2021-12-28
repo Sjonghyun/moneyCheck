@@ -16,9 +16,9 @@ public class IncomeService {
         incomeMapper.insert_income(income);
     }
 
-    public List<Income> incomeList(int u_no){
+    public List<Income> incomeList(int book_no){
 
-        return incomeMapper.IncomeList(u_no);
+        return incomeMapper.IncomeList(book_no);
     }
 
     public void delete_income(int in_no){

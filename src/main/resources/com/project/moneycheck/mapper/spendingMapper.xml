@@ -5,23 +5,28 @@
 
 <mapper namespace="com.project.moneycheck.mapper.SpendingMapper">
     <select id="spendingList" resultType="Spending" parameterType="int">
-        SELECT * FROM SPENDING WHERE U_NO = #{U_NO} ORDER BY SP_DATE
+        SELECT * FROM SPENDING WHERE BOOK_NO = #{book_no} ORDER BY SP_DATE
     </select>
     <insert id="insert_spending" useGeneratedKeys="true"  keyProperty="spending.sp_no" parameterType="Map" >
         INSERT INTO SPENDING
-            (SP_DATE,SP_USED,SP_MONEY,SP_ACCOUNT,SP_CATEGORY,SP_MEMO,U_NO)
+            (SP_DATE,SP_USED,SP_MONEY,SP_ACCOUNT,SP_CATEGORY,SP_MEMO,BOOK_NO)
             VALUES(#{spending.sp_date},#{spending.sp_used},#{spending.sp_money}
-                   ,#{spending.sp_account},#{spending.sp_category},#{spending.sp_memo},#{spending.u_no})
+                   ,#{spending.sp_account},#{spending.sp_category},#{spending.sp_memo},#{spending.book_no})
     </insert>
     <delete id="delete_spending">
         DELETE FROM SPENDING WHERE SP_NO = #{sp_no}
     </delete>
     <insert id="excelUpload" parameterType="Map" >
-        INSERT INTO SPENDING(SP_DATE, SP_USED, SP_MONEY,SP_ACCOUNT, SP_CATEGORY, SP_MEMO,U_NO)
+        INSERT INTO SPENDING(SP_DATE, SP_USED, SP_MONEY,SP_ACCOUNT, SP_CATEGORY, SP_MEMO,BOOK_NO)
         VALUES
         <foreach collection="excelContent" item="item" separator=",">
-            (#{item.A},#{item.B},#{item.C},#{item.D},#{item.E},#{item.F},#{u_no})
+            (#{item.A},#{item.B},#{item.C},#{item.D},#{item.E},#{item.F},#{book_no})
         </foreach>
 
     </insert>
+
+<!--    <select id="spend_list" resultType="Spending" parameterType="Map">-->
+<!--        select count(*) from spending where sp_date >= #{db_startDate} and #{db_endDate} >= sp_date and u_no = #{u_no}-->
+<!--        order by sp_date-->
+<!--    </select>-->
 </mapper>

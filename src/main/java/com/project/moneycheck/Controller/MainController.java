@@ -2,9 +2,12 @@ package com.project.moneycheck.Controller;
 
 import com.project.moneycheck.dto.DateData;
 import com.project.moneycheck.dto.ScheduleDto;
+import com.project.moneycheck.dto.Spending;
 import com.project.moneycheck.mapper.ScheduleDao;
 import com.project.moneycheck.service.IncomeService;
+import com.project.moneycheck.service.MailService;
 import com.project.moneycheck.service.SpendingService;
+import com.project.moneycheck.service.UsersService;
 import lombok.AllArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,9 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +35,10 @@ import java.util.Map;
 public class MainController {
     @Autowired
     SqlSession sqlSession;
+
+    private SpendingService spendingService;
+    private final MailService mailService;
+    private UsersService usersService;
 
     @GetMapping("/main")
     public String main(Model model, HttpServletRequest request, DateData dateData){
@@ -48,7 +57,6 @@ public class MainController {
             // 검색 날짜 end
             ScheduleDao scheduleDao = sqlSession.getMapper(ScheduleDao.class);
             ArrayList<ScheduleDto> Schedule_list = scheduleDao.schedule_list(dateData);
-
             // 달력데이터에 넣기 위한 배열 추가
             ScheduleDto[][] schedule_data_arr = new ScheduleDto[32][4];
             if (Schedule_list.isEmpty() != true) {
@@ -83,7 +91,6 @@ public class MainController {
             for (int i = today_info.get("startDay"); i <= today_info.get("endDay"); i++) {
                 ScheduleDto[] schedule_data_arr3 = new ScheduleDto[4];
                 schedule_data_arr3 = schedule_data_arr[i];
-
                 if (i == today_info.get("today")) {
                     calendarData = new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()),
                             String.valueOf(i), "today", schedule_data_arr3);
@@ -102,11 +109,52 @@ public class MainController {
                 }
             }
             // 배열에 담음
+
             model.addAttribute("dateList", dateList); // 날짜 데이터 배열
             model.addAttribute("today_info", today_info);
 
         return "main";
     }
+    @RequestMapping(value = "schedule_add.do", method = RequestMethod.GET)
+    public String schedule_add(HttpServletRequest request, ScheduleDto scheduleDto, RedirectAttributes rttr) {
+        ScheduleDao scheduleDao = sqlSession.getMapper(ScheduleDao.class);
+        int count = scheduleDao.before_schedule_add_search(scheduleDto);
+        String message = "";
+        String url = "redirect:main";
+        if (count >= 4) {
+            message = "스케쥴은 최대 4개만 등록 가능합니다.";
+        } else {
+            scheduleDao.schedule_add(scheduleDto);
+            message = "스케쥴이 등록되었습니다";
+        }
+        rttr.addFlashAttribute("message", message);
+        return url;
+    }
+    @RequestMapping(value = "/schedule_show", method = RequestMethod.GET)
+    public String schedule_show(Model model,HttpServletRequest request, @RequestParam("schedule_idx") int idx, RedirectAttributes rttr) {
+        ScheduleDao scheduleDao = sqlSession.getMapper(ScheduleDao.class);
+        String url = "redirect:/main";
+        scheduleDao.get(idx);
+        model.addAttribute("schedule_show",scheduleDao.get(idx));
+        return null;
+    }
+
+    @RequestMapping(value = "modify.do", method = RequestMethod.GET)
+    public String schedule_modify(Model model,HttpServletRequest request, ScheduleDto scheduleDto, RedirectAttributes rttr) {
+        ScheduleDao scheduleDao = sqlSession.getMapper(ScheduleDao.class);
+        scheduleDao.update(scheduleDto);
+        model.addAttribute("schedule_modify",scheduleDao.update(scheduleDto));
+        return "/modify";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String schedule_delete(Model model,HttpServletRequest request, ScheduleDto scheduleDto, RedirectAttributes rttr) {
+        ScheduleDao scheduleDao = sqlSession.getMapper(ScheduleDao.class);
+        scheduleDao.delete(scheduleDto);
+        model.addAttribute("schedule_delete",scheduleDao.delete(scheduleDto));
+        return null;
+    }
+
     @GetMapping("/login")
     public String login(){
         return "login";
@@ -117,7 +165,7 @@ public class MainController {
         return "userInfo";
     }
     @PostMapping("/download.do")
-    public String excelDownload(@RequestParam("u_no")String u_no, HttpServletResponse response) throws IOException {
+    public String excelDownload(@RequestParam("book_no")String book_no, HttpServletResponse response) throws IOException {
         Workbook wb = new XSSFWorkbook();
         Sheet sheet = wb.createSheet("업로드 양식");
         Row row = null;
@@ -152,27 +200,39 @@ public class MainController {
 
         return null;
     }
-//    @GetMapping("/insert_income")
-//    public String insert_income(){
-//
-//
-//        return "insert_income";
-//    }
-//    @GetMapping("/insert_spend")
-//    public String insert_spend(){
-//
-//
-//        return "insert_spend";
-//    }
-
     @RequestMapping("/excel")
-    public String excel(@RequestParam("u_no")String u_no){
+    public String excel(@RequestParam("book_no")String book_no){
 
         return "/excel";
     }
     @RequestMapping("/excelIncome")
-    public String excelIncome(@RequestParam("u_no")String u_no){
+    public String excelIncome(@RequestParam("book_no")String book_no){
 
         return "/excelIncome";
+    }
+    @GetMapping("/invite")
+    public String invite(){
+        return "/invite";
+    }
+
+    @ResponseBody
+    @PostMapping("/invite.do")
+    public int execMail(HttpServletRequest request, String u_mail,String name,String book_no) {
+        int num = usersService.userMail(u_mail);
+        if(num == 1){
+            mailService.mailSend(request, u_mail,name,book_no);
+        }else{
+            System.out.println("아이디가 없습니다.");
+        }
+        return num;
+    }
+
+    @GetMapping("/addUser")
+    public String connectUsers(@RequestParam("book_no")String book_no, @RequestParam("u_mail") String u_mail){
+        System.out.println(book_no);
+        System.out.println(u_mail);
+        usersService.connectUsers(book_no,u_mail);
+
+        return "/addUser";
     }
 }

@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 public enum SocialType {
     NAVER("NAVER"),
     KAKAO("KAKAO"),
-    FACEBOOK("FACEBOOK"),
-    GITHUB("GITHUB"),
     GOOGLE("GOOGLE");
 
     private final String snsName;

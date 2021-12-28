@@ -17,5 +17,5 @@ public class Spending {
     private String sp_account;
     private String sp_category;
     private String sp_memo;
-    private int u_no;
+    private int book_no;
 }

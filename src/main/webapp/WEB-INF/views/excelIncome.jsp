@@ -14,7 +14,7 @@
 
         <dl class="vm_name">
             <dt class="down w90">첨부 파일</dt>
-            <input type="hidden" name="u_no" value="${param.u_no}">
+            <input type="hidden" name="book_no" value="${param.book_no}">
             <dd><input id="excelFile" type="file" name="excelFile" /></dd>
         </dl>
     </div>

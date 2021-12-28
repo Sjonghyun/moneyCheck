@@ -28,27 +28,27 @@ public class IncomeController {
     private final IncomeMapper incomeMapper;
 
     @RequestMapping("/insert_income")
-    public String insert_income(@RequestParam("u_no") String u_no, Model model){
+    public String insert_income(@RequestParam("book_no") String book_no, Model model){
 
-        List<Income> incomeList = this.incomeService.incomeList(Integer.parseInt(u_no));
+        List<Income> incomeList = this.incomeService.incomeList(Integer.parseInt(book_no));
         model.addAttribute("incomeList",incomeList);
 
         return "/insert_income";
     }
     @PostMapping("/insert_income.do")
-    public String income_insert(@RequestParam("u_no") String u_no,Income income){
+    public String income_insert(@RequestParam("book_no") String book_no,Income income){
         incomeService.insert_spending(income);
-        return "redirect:/insert_income?u_no="+ u_no;
+        return "redirect:/insert_income?book_no="+ book_no;
     }
     @PostMapping("/delete_income")
-    public String delete_income(@RequestParam("in_no")String in_no, @RequestParam("u_no") String u_no){
+    public String delete_income(@RequestParam("in_no")String in_no, @RequestParam("book_no") String book_no){
         incomeService.delete_income(Integer.parseInt(in_no));
         //여기서부터 하면됨.
-        return "redirect:/insert_income?u_no="+ u_no;
+        return "redirect:/insert_income?book_no="+ book_no;
     }
     @ResponseBody
     @PostMapping(value = "/income_excelUpload.do")
-    public Map<String,Object> income_excelUpload(MultipartHttpServletRequest request, @RequestParam("u_no")String u_no) throws Exception{
+    public Map<String,Object> income_excelUpload(MultipartHttpServletRequest request, @RequestParam("book_no")String book_no) throws Exception{
 
         MultipartFile excelFile =request.getFile("excelFile");
 
@@ -58,13 +58,12 @@ public class IncomeController {
             throw new RuntimeException("엑셀파일을 선택 해 주세요.");
         }
         File destFile = new File("C:\\upload\\"+excelFile.getOriginalFilename());
-        try{
-            excelFile.
-                    transferTo(destFile);
-        }catch(IllegalStateException | IOException e){
-//            throw new RuntimeException(e.getMessage(),e);
-            e.printStackTrace();
-        }
+//        try{
+//            excelFile.transferTo(destFile);
+//        }catch(IllegalStateException | IOException e){
+////            throw new RuntimeException(e.getMessage(),e);
+//            e.printStackTrace();
+//        }
 
         ExcelReadOption excelReadOption = new ExcelReadOption();
 
@@ -78,7 +77,7 @@ public class IncomeController {
 
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("excelContent",excelContent);
-        paramMap.put("u_no",u_no);
+        paramMap.put("book_no",book_no);
         System.out.println(paramMap);
 
         try {

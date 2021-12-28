@@ -12,6 +12,7 @@ public class UsersVO extends AuthInfo {
     private int u_no;
     private String u_mail;
     private String u_name;
+    private int book_no;
 
 
     public UsersVO(String u_name, String u_mail) {

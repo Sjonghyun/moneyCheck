@@ -1,17 +1,20 @@
-
 /* 배경색 */
 html {
     background-color: #EFEFEF;
 }
 
 body {
-    /*scrollbar-face-color: #F6F6F6;*/
-    /*scrollbar-highlight-color: #bbbbbb;*/
-    /*scrollbar-3dlight-color: #FFFFFF;*/
-    /*scrollbar-shadow-color: #bbbbbb;*/
-    /*scrollbar-darkshadow-color: #FFFFFF;*/
-    /*scrollbar-track-color: #FFFFFF;*/
-    /*scrollbar-arrow-color: #bbbbbb;*/
+    scrollbar-face-color: #F6F6F6;
+    scrollbar-highlight-color: #bbbbbb;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-shadow-color: #bbbbbb;
+    scrollbar-darkshadow-color: #FFFFFF;
+    scrollbar-track-color: #FFFFFF;
+    scrollbar-arrow-color: #bbbbbb;
+    margin-left: "0px";
+    margin-right: "0px";
+    margin-top: "0px";
+    margin-bottom: "0px";
 }
 
 td {

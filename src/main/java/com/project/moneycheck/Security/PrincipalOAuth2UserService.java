@@ -48,6 +48,7 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
             userInfo = new UsersVO(oAuth2Info.getNickName(), oAuth2Info.getEmail());
             usersMapper.insertEmptyUser(userInfo);
             usersMapper.insertBySNS(snsID, userInfo);
+            usersMapper.addBookno(userInfo);
         }
 
         AuthValue authValue = new AuthValue();

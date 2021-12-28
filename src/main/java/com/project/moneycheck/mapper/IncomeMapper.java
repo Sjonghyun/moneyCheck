@@ -12,7 +12,7 @@ import java.util.Map;
 @Mapper
 public interface IncomeMapper {
 
-    List<Income> IncomeList(int u_no);
+    List<Income> IncomeList(int book_no);
 
     void insert_income(@Param("income") Income income);
 

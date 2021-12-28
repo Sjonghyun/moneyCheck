@@ -73,7 +73,7 @@
                     <a class="nav-link " href="#">보고서(그래프)</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/insert_spend?u_no=${param.u_no}">가계부 쓰기</a>
+                    <a class="nav-link" href="/insert_spend?book_no=${param.book_no}">가계부 쓰기</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
@@ -107,10 +107,10 @@
             <div class="black"></div>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <label  class="nav-link active show"  onclick="location.href='/insert_spend?u_no=${param.u_no}'">지출</label>
+                    <label  class="nav-link active show"  onclick="location.href='/insert_spend?book_no=${param.book_no}'">지출</label>
                 </li>
                 <li class="nav-item">
-                    <label  class="nav-link"  onclick="location.href='/insert_income?u_no=${param.u_no}'">수입</label>
+                    <label  class="nav-link"  onclick="location.href='/insert_income?book_no=${param.book_no}'">수입</label>
                 </li>
                 <li class="nav-item insert_last">
                     <a class="nav-link" onclick="addRow()">행추가</a>
@@ -122,7 +122,7 @@
             <div class="tab-content">
                 <div id="spendingbox" >
                 <form name="form" action="/insert_spending.do" method="post">
-                        <input type="hidden" name="u_no" value="${param.u_no}">
+                        <input type="hidden" name="book_no" value="${param.book_no}">
                     <table class="table table-hover h-auto insert-table" id="spend_table" >
                         <tr>
                             <th><input type="checkbox" name="selectall" value="selectall" onclick="selectAll(this)"></th>
