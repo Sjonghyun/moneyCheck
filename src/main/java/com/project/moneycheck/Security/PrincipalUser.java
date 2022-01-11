@@ -31,6 +31,8 @@ public class PrincipalUser implements UserDetails, OAuth2User {
         this.attributes = attributes;
     }
 
+
+
     public String getAuthRole() {
         return this.authInfo.getAuthValue().getRole();
     }

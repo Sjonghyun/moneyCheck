@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.moneycheck.mapper.IncomeMapper">
-    <select id="IncomeList" resultType="Income" parameterType="int" >
-        SELECT * FROM INCOME WHERE book_no = #{book_no} ORDER BY IN_DATE
+    <select id="IncomeList" resultType="Income" >
+        SELECT * FROM INCOME WHERE book_no = #{book_no} and date_format(in_date,'%Y-%m') = #{date} ORDER BY IN_DATE
     </select>
     <insert id="insert_income" useGeneratedKeys="true" keyProperty="income.in_no">
         INSERT INTO INCOME
@@ -23,4 +23,25 @@
             (#{item.A},#{item.B},#{item.C},#{item.D},#{item.E},#{item.F},#{book_no})
         </foreach>
     </insert>
+
+    <select id="income_list" resultType="Income">
+        select * from Income where in_date >= #{dateData.db_startDate} and #{dateData.db_endDate} >= in_date and book_no=#{book_no}
+        order by in_date
+    </select>
+    <select id="inCount" resultType="int">
+        select count(*) 'in_count' from Income in_date =#{in_date}
+    </select>
+    <select id="yearIn" resultType="IncomeVO">
+        SELECT DATE_FORMAT(in_date,'%Y') dates , sum(in_money) money FROM Income where book_no = #{book_no} GROUP BY dates order by in_date;
+    </select>
+    <select id="monthIn" resultType="IncomeVO">
+        SELECT DATE_FORMAT(in_date,'%Y-%m') dates, sum(in_money) money FROM Income where book_no = #{book_no} and date_format(in_date,'%Y')=#{date} GROUP BY dates order by in_date;
+    </select>
+    <select id="dayIn" resultType="IncomeVO">
+        SELECT DATE_FORMAT(in_date,'%Y-%m-%d') dates, sum(in_money) money FROM Income where book_no = #{book_no} and date_format(in_date,'%Y-%m') =#{date} GROUP BY dates order by in_date;
+    </select>
+
+    <select id="inMoney" resultType="String">
+        select format(sum(in_money),0) from income where book_no=#{book_no} and date_format(in_date,'%Y-%m')=#{date}
+    </select>
 </mapper>

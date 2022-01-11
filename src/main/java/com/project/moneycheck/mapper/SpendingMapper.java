@@ -1,9 +1,12 @@
 package com.project.moneycheck.mapper;
 
 import com.project.moneycheck.dto.DateData;
+import com.project.moneycheck.dto.ScheduleDto;
 import com.project.moneycheck.dto.Spending;
+import com.project.moneycheck.dto.SpendingVO;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +14,7 @@ import java.util.Map;
 @Mapper
 public interface SpendingMapper {
 
-    List<Spending> spendingList(int book_no);
+    List<Spending> spendingList(int book_no,String date);
 
     void insert_spending(@Param("spending") Spending spending);
 
@@ -23,6 +26,14 @@ public interface SpendingMapper {
 
     void excelUpload(Map<String,Object> paramMap)throws Exception;
 
-    ArrayList<Spending> spend_list(DateData dateData);
+    ArrayList<Spending> spend_list(DateData dateData, @Param("book_no")int book_no);
+
+    int spCount(@Param("sp_date") String sp_date);
+
+    List<SpendingVO> yearSp(@Param("book_no") int book_no);
+    List<SpendingVO> monthSp(@Param("book_no") int book_no, @Param("date") String date);
+    List<SpendingVO> daySp(@Param("book_no") int book_no, @Param("date") String date);
+
+    String spMoney(@Param("book_no") int book_no, @Param("date") String date);
 
 }

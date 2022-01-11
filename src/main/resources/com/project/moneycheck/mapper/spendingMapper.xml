@@ -4,20 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.moneycheck.mapper.SpendingMapper">
-    <select id="spendingList" resultType="Spending" parameterType="int">
-        SELECT * FROM SPENDING WHERE BOOK_NO = #{book_no} ORDER BY SP_DATE
+    <select id="spendingList" resultType="Spending">
+        SELECT * FROM SPENDING WHERE BOOK_NO = #{book_no} and date_format(sp_date,'%Y-%m') = #{date} ORDER BY SP_DATE
     </select>
     <insert id="insert_spending" useGeneratedKeys="true"  keyProperty="spending.sp_no" parameterType="Map" >
         INSERT INTO SPENDING
-            (SP_DATE,SP_USED,SP_MONEY,SP_ACCOUNT,SP_CATEGORY,SP_MEMO,BOOK_NO)
+            (SP_DATE,SP_USED,SP_MONEY,SP_CATEGORY,SP_ACCOUNT,SP_MEMO,BOOK_NO)
             VALUES(#{spending.sp_date},#{spending.sp_used},#{spending.sp_money}
-                   ,#{spending.sp_account},#{spending.sp_category},#{spending.sp_memo},#{spending.book_no})
+                   ,#{spending.sp_category},#{spending.sp_account},#{spending.sp_memo},#{spending.book_no})
     </insert>
     <delete id="delete_spending">
         DELETE FROM SPENDING WHERE SP_NO = #{sp_no}
     </delete>
     <insert id="excelUpload" parameterType="Map" >
-        INSERT INTO SPENDING(SP_DATE, SP_USED, SP_MONEY,SP_ACCOUNT, SP_CATEGORY, SP_MEMO,BOOK_NO)
+        INSERT INTO SPENDING(SP_DATE, SP_USED, SP_MONEY,SP_CATEGORY,SP_ACCOUNT,SP_MEMO,BOOK_NO)
         VALUES
         <foreach collection="excelContent" item="item" separator=",">
             (#{item.A},#{item.B},#{item.C},#{item.D},#{item.E},#{item.F},#{book_no})
@@ -25,8 +25,24 @@
 
     </insert>
 
-<!--    <select id="spend_list" resultType="Spending" parameterType="Map">-->
-<!--        select count(*) from spending where sp_date >= #{db_startDate} and #{db_endDate} >= sp_date and u_no = #{u_no}-->
-<!--        order by sp_date-->
-<!--    </select>-->
+    <select id="spend_list" resultType="Spending">
+        select * from Spending where sp_date >= #{dateData.db_startDate} and #{dateData.db_endDate} >= sp_date and book_no=#{book_no}
+        order by sp_date
+    </select>
+    <select id="spCount" resultType="int">
+        select count(*) 'sp_count' from Spending sp_date =#{sp_date}
+    </select>
+    <select id="yearSp" resultType="SpendingVO">
+        SELECT DATE_FORMAT(sp_date,'%Y') dates , sum(sp_money) money FROM spending where book_no = #{book_no} GROUP BY dates order by sp_date;
+    </select>
+    <select id="monthSp" resultType="SpendingVO">
+        SELECT DATE_FORMAT(sp_date,'%Y-%m') dates, sum(sp_money) money FROM spending where book_no = #{book_no} and date_format(sp_date,'%Y')=#{date} GROUP BY dates order by sp_date;
+    </select>
+    <select id="daySp" resultType="SpendingVO">
+        SELECT DATE_FORMAT(sp_date,'%Y-%m-%d') dates, sum(sp_money) money FROM spending where book_no = #{book_no} and date_format(sp_date,'%Y-%m') =#{date} GROUP BY dates order by sp_date;
+    </select>
+
+    <select id="spMoney" resultType="String">
+        select format(sum(sp_money),0) from spending where book_no=#{book_no} and date_format(sp_date,'%Y-%m')=#{date}
+    </select>
 </mapper>

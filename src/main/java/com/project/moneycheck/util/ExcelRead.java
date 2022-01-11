@@ -22,7 +22,6 @@ public class ExcelRead {
         /**
          * sheet에서 유효한(데이터가 있는) 행의 개수를 가져온다.
          */
-        //int numOfRows = sheet.getPhysicalNumberOfRows();
         int sheetNum = wb.getNumberOfSheets();
         int numOfCells = 0;
 
@@ -51,14 +50,11 @@ public class ExcelRead {
             Sheet sheet = wb.getSheetAt(i);
 
            int numOfRows = sheet.getPhysicalNumberOfRows();
-
         for(int rowIndex = excelReadOption.getStartRow() - 1; rowIndex < numOfRows; rowIndex++) {
 
             row = sheet.getRow(rowIndex);
 
             if(row != null) {
-                // 가져온 Row의 Cell의 개수를 구한다.
-//                numOfCells = row.getPhysicalNumberOfCells();
 
                 numOfCells =  row.getLastCellNum();
 

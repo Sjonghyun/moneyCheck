@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html lang="en">
 <sec:authentication property="principal" var="session"/>
 <c:if test="${session ne 'anonymousUser'}">
@@ -20,148 +21,39 @@
     <link href="/resources/css/calendar.css" rel="stylesheet">
     <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/resources/css/datepicker.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
-    <div class="row">
-        <nav class="navbar navbar-expand-lg fixed-top">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/main">MONEYCHECK</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarColor03">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">기능1
-                                <%--                                <span class="visually-hidden">(current)</span>--%>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">기능2</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">기능3</a>
-                        </li>
-                    </ul>
-                    <c:choose>
-                        <c:when test="${empty user}" >
-                            <ul class="navbar-nav ml-md-auto">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">login</a>
-                                    <div class="dropdown-menu">
-                                        <a class="nav-link p-2 sns_button" href="/oauth2/authorization/naver" aria-label="naver"><img src="/resources/img/sns_naver.png"></a>
-                                        <a class="nav-link p-2 sns_button" href="/oauth2/authorization/kakao" aria-label="kakao"><img src="/resources/img/sns_kakao.jpg"></a>
-                                        <a class="nav-link p-2 sns_button" href="/oauth2/authorization/google" aria-label="google"><img src="/resources/img/sns_google.png"></a>
-                                    </div>
-                                </li>
-                                <li class="nav-item last">
-                                </li>
-                            </ul>
-                        </c:when>
-                        <c:otherwise>
-                            <ul class="navbar-nav ml-md-auto">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">${user.u_name}</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">${user.u_mail}</a>
-                                        <a class="dropdown-item" href="/invite">초대하기</a>
-                                        <a class="dropdown-item" href="#">대화하기</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="/logout">로그아웃</a>
-                                    </div>
-                                <li class="nav-item last">
-                                </li>
-                                </li>
-                            </ul>
-                        </c:otherwise>
-                    </c:choose>
-
-                </div>
-            </div>
-        </nav>
-    </div>
-    <c:if test="${!empty user}">
-    <div class="row h-100">
-        <div class="col-md-1 sidebar">
-            <div class="black">
-            </div>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="/excel?book_no=${user.book_no}">거래내역 엑셀 업로드</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">보고서(그래프)</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/insert_spend?book_no=${user.book_no}&year=${today_info.search_year}&month=${today_info.search_month}">가계부 쓰기</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
-                </li>
-            </ul>
-            <h2>
-                자산총액 나타날 곳
-            </h2>
-
-            <div>
-                수입 = ********.
-            </div>지출 = ********<span>.</span>
-
-            <div>
-                총액 = *******원
-            </div>
-
-            <p>
-                <a class="btn" href="#"></a>
-            </p>
-        </div>
-
-        </c:if>
+<jsp:include page="header.jsp"></jsp:include>
+<jsp:include page="sidebar.jsp"></jsp:include>
 
         <c:choose>
             <c:when test="${!empty user}">
-            <script>
-                /* 스케줄 등록시 등록완료 팝업창 */
-                var message = "${message}";
-                console.log(message);
-                if (message != "") {
-                    alert(message);
-                }
-            </script>
-                <div class="col-md-11 calendar">
-                    <div class="text-center">
+    <div class="col-md-11 calendar">
+        <div class="text-center">
         <form name="calendarFrm" id="calendarFrm" action="" method="GET">
             <input type="hidden" name="year" value="${today_info.search_year}" />
             <input type="hidden" name="month" value="${today_info.search_month-1}" />
                         <div class="navigation">
                             <a class="before_after_year"
-                               href="./main?year=${today_info.search_year-1}&month=${today_info.search_month-1}">
+                               href="/main?year=${today_info.search_year-1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
                                 &lt;&lt; <!-- 이전해 -->
                             </a> <a class="before_after_month"
-                                    href="./main?year=${today_info.before_year}&month=${today_info.before_month}">
+                                    href="/main?year=${today_info.before_year}&month=${today_info.before_month}&book_no=${param.book_no}">
                             &lt; <!-- 이전달 -->
-                        </a> <span class="this_month"> &nbsp;${today_info.search_year}. <c:if
-                                test="${today_info.search_month<10}">0</c:if>${today_info.search_month}
+                        </a> <span class="this_month"> &nbsp;${today_info.search_year}년
+                            <c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}월
 			            	</span> <a class="before_after_month"
-                                    href="/main?year=${today_info.after_year}&month=${today_info.after_month}">
+                                    href="/main?year=${today_info.after_year}&month=${today_info.after_month}&book_no=${param.book_no}">
                             <!-- 다음달 --> &gt;
                         </a> <a class="before_after_year"
-                                href="/main?year=${today_info.search_year+1}&month=${today_info.search_month-1}">
+                                href="/main?year=${today_info.search_year+1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
                             <!-- 다음해 --> &gt;&gt;
                         </a>
                         </div>
-
-                    </div>
                     <div class="today_button_div">
                         <button type="button" class="buttonstyle"
-                                onclick="javascript:location.href='/main'"
+                                onclick="javascript:location.href='/main?book_no=${param.book_no}'"
                                 style="height: 30px; width: 80px;">Today</button>
                         <button type="button"
                                 class="buttonstyle board_move openMask_board_move pointer"
@@ -209,18 +101,41 @@
                                     </c:choose>
                                         ${dateList.date}
                                 </div>
-
                                 <div>
-                                    <!-- 달력에 일정 띄우고 클릭 시 수정/삭제 창 띄우는 코드 -->
+                                    <c:set var="spResult" value="0"/>
+                                    <c:set var="inResult" value="0"/>
+                                    <c:forEach var="spendList" items="${dateList.spending_data_arr}" varStatus="status">
+                                        <c:if test="${!empty spendList}">
+                                            <c:set var="count" value="${count +1}"/>
+                                            <c:set var="spResult" value="${spResult + count}"/>
+                                             <c:set var="count" value="0"/>
+                                        </c:if>
+                                    </c:forEach>
+                                    <c:if test="${spResult ne 0}">
+                                        <div>
+                                            <span class="date_subject">지출 ${spResult}건</span>
+                                        </div>
+                                    </c:if>
+                                    <c:forEach var="incomeList" items="${dateList.income_data_arr}" varStatus="status">
+                                        <c:if test="${!empty incomeList}">
+                                            <c:set var="count" value="${count +1}"/>
+                                            <c:set var="inResult" value="${inResult + count}"/>
+                                            <c:set var="count" value="0"/>
+                                        </c:if>
+                                    </c:forEach>
+                                    <c:if test="${inResult ne 0}">
+                                       <div>
+                                            <span class="date_subject">수입 ${inResult}건</span>
+                                       </div>
+                                    </c:if>
                                     <c:forEach var="scheduleList"
                                                items="${dateList.schedule_data_arr}"
                                                varStatus="schedule_data_arr_status">
 
                                         <a
-                                                href="/schedule_show?schedule_idx=${scheduleList.schedule_idx}"
+                                                href="/schedule_show?schedule_idx=${scheduleList.schedule_idx}&book_no=${user.book_no}"
                                                 onclick="window.open(this.href, '_blank', 'width=550,height=600,left=680%, top=200%, toolbars=no,scrollbars=no'); return false;"
-                                                class="date_subject "
-                                                style="color: ${scheduleList.schedule_mycolor}">${scheduleList.schedule_subject}</a>
+                                                class="date_subject">${scheduleList.schedule_subject}</a>
                                         <br>
 
                                     </c:forEach>
@@ -235,75 +150,30 @@
         </c:choose>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<%--    <script src="/resources/js/jquery.min.js"></script>--%>
-<%--    <script src="/resources/js/datepicker.min.js"></script>--%>
         <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="/resources/js/scripts.js"></script>
-        <div id="mask_board_move"></div>
-        <div class="normal_move_board_modal">
-            <script>
-                var idx;
-                var num;
-                var subject;
-                var desc;
-                var date;
-                var share;
-                var mycolor;
-
-                $(function() {
-                    $("#testDatepicker")
-                        .datepicker(
-                            {
-
-                                dateFormat : "yy-mm-dd",
-                                changeMonth : true,
-                                changeYear : true,
-                                dayNames : [ '월요일', '화요일', '수요일', '목요일',
-                                    '금요일', '토요일', '일요일' ],
-                                dayNamesMin : [ '월', '화', '수', '목', '금',
-                                    '토', '일' ],
-                                monthNamesShort : [ '1', '2', '3', '4',
-                                    '5', '6', '7', '8', '9', '10',
-                                    '11', '12' ]
-                            });
-                });
-                function scheduleAdd() {
-                    var schedule_add_form = document.schedule_add;
-                    if (schedule_add_form.schedule_date.value == ""
-                        || schedule_add_form.schedule_date.value == null) {
-                        alert("날짜를 입력해주세요.");
-                        schedule_add_form.schedule_date.focus();
-                        return false;
-                    } else if (schedule_add_form.schedule_subject.value == ""
-                        || schedule_add_form.schedule_subject.value == null) {
-                        alert("제목을 입력해주세요.");
-                        schedule_add_form.schedule_date.focus();
-                        return false;
-                    }
-                    schedule_add_form.submit();
-                }
-            </script>
+            <div id="mask_board_move"></div>
+            <div class="normal_move_board_modal">
             <div class="top" style="">
                 <div class="close">x</div>
-                <div class="subject">Add Schedule</div>
+                <div class="subject">일정 추가</div>
             </div>
 
             <div class="bottom">
-                <div class="info">* 순번은 해당 날짜안에서 순서대로 입력이 됩니다.(하루에 최대 4개의 스케줄만
-                    등록할 수 있습니다.)</div>
                 <form name="schedule_add" action="schedule_add.do">
                     <input type="hidden" name="year" value="${today_info.search_year}" />
                     <input type="hidden" name="month"
                            value="${today_info.search_month-1}" />
                     <div class="contents">
+                        <input type="hidden" name="book_no" id="book_no" value="${user.book_no}">
                         <ul>
-                            <li>
-                                <div class="text_subject">순번 :</div>
-                                <div class="text_desc">
-                                    <input type="text" name="schedule_num" class="text_type1" />
-                                </div>
-                            </li>
+<%--                            <li>--%>
+<%--                                <div class="text_subject">순번 :</div>--%>
+<%--                                <div class="text_desc">--%>
+<%--                                    <input type="text" name="schedule_num" class="text_type1" />--%>
+<%--                                </div>--%>
+<%--                            </li>--%>
                             <li>
                                 <div class="text_subject">날짜 :</div>
                                 <div class="text_desc">
@@ -323,26 +193,38 @@
                                     <textarea name="schedule_desc" class="textarea_type1" rows="5"></textarea>
                                 </div>
                             </li>
-<%--                            <li>--%>
-<%--                                <div class="text_subject">공유 :</div> <input class="radio"--%>
-<%--                                                                            type="radio" name="schedule_share" value="1" checked="checked">공개--%>
-<%--                                <input type="radio" name="schedule_share" value="2">비공개--%>
-<%--                            </li>--%>
-<%--                            <li>--%>
-<%--                                <div class="text_subject">색상 :</div> <input class="colorbox"--%>
-<%--                                                                            type='color' name='schedule_mycolor' value='' />--%>
-<%--                            </li>--%>
+                            <li>
+
+                            </li>
+                            <li>
+
+                            </li>
+                            <li>
+
+                            </li>
+                            <li>
+
+                            </li>
+                            <li>
+
+                            </li>
                             <li class="button_li">
                                 <button type="button" class="buttonstyle board_move_go pointer"
-                                        onclick="scheduleAdd();">Add</button>
+                                        onclick="scheduleAdd();">일정추가</button>
                             </li>
                         </ul>
 
                     </div>
                 </form>
             </div>
-
+            </div>
         </div>
-
+<script>
+    var message = "${message}";
+    console.log(message);
+    if (message != "") {
+        alert(message);
+    }
+</script>
 </body>
 </html>

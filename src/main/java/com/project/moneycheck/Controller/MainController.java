@@ -1,14 +1,17 @@
 package com.project.moneycheck.Controller;
 
-import com.project.moneycheck.dto.DateData;
-import com.project.moneycheck.dto.ScheduleDto;
-import com.project.moneycheck.dto.Spending;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.project.moneycheck.dto.*;
 import com.project.moneycheck.mapper.ScheduleDao;
+import com.project.moneycheck.mapper.SpendingMapper;
 import com.project.moneycheck.service.IncomeService;
 import com.project.moneycheck.service.MailService;
 import com.project.moneycheck.service.SpendingService;
 import com.project.moneycheck.service.UsersService;
 import lombok.AllArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -25,10 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @AllArgsConstructor
@@ -36,19 +36,37 @@ public class MainController {
     @Autowired
     SqlSession sqlSession;
 
+    private IncomeService incomeService;
     private SpendingService spendingService;
     private final MailService mailService;
     private UsersService usersService;
 
+    @GetMapping("/index")
+    public String index(){
+        return "/index";
+    }
+
+    @GetMapping("/sidebar")
+    public String sidebar(Model model, @Param("book_no") String book_no){
+        List<Users> usersList = usersService.loadUsers(Integer.parseInt(book_no));
+        model.addAttribute("usersList",usersList);
+
+        return "/sidebar";
+    }
+
     @GetMapping("/main")
-    public String main(Model model, HttpServletRequest request, DateData dateData){
+    public String main(Model model, HttpServletRequest request, DateData dateData, @Param("book_no") int book_no){
+
+            List<Users> usersList = usersService.loadUsers(book_no);
+            model.addAttribute("usersList",usersList);
 
             Calendar cal = Calendar.getInstance();
             DateData calendarData;
+
             // 검색 날짜
             if (dateData.getDate().equals("") && dateData.getMonth().equals("")) {
                 dateData = new DateData(String.valueOf(cal.get(Calendar.YEAR)), String.valueOf(cal.get(Calendar.MONTH)),
-                        String.valueOf(cal.get(Calendar.DATE)), null, null);
+                        String.valueOf(cal.get(Calendar.DATE)), null,null,null,null);
             }
 
             Map<String, Integer> today_info = dateData.today_info(dateData);
@@ -56,7 +74,8 @@ public class MainController {
 
             // 검색 날짜 end
             ScheduleDao scheduleDao = sqlSession.getMapper(ScheduleDao.class);
-            ArrayList<ScheduleDto> Schedule_list = scheduleDao.schedule_list(dateData);
+            ArrayList<ScheduleDto> Schedule_list = scheduleDao.schedule_list(dateData,book_no);
+
             // 달력데이터에 넣기 위한 배열 추가
             ScheduleDto[][] schedule_data_arr = new ScheduleDto[32][4];
             if (Schedule_list.isEmpty() != true) {
@@ -81,61 +100,106 @@ public class MainController {
                     }
                 }
             }
-            // 실질적인 달력 데이터 리스트에 데이터 삽입 시작.
-            // 일단 시작 인덱스까지 아무것도 없는 데이터 삽입
+            ArrayList<Spending> spending_list = spendingService.spend_list(dateData,book_no);
+            Spending[][] spending_data_arr = new Spending[32][spending_list.size()];
+
+            if (spending_list.isEmpty() != true) {
+                int j = 0;
+                for (int i = 0; i < spending_list.size(); i++) {
+                    int date = Integer.parseInt(String.valueOf(spending_list.get(i).getSp_date()).substring(
+                            String.valueOf(spending_list.get(i).getSp_date()).length() - 2,
+                            String.valueOf(spending_list.get(i).getSp_date()).length()));
+                    if (i > 0) {
+                        int date_before = Integer.parseInt(String.valueOf(spending_list.get(i - 1).getSp_date())
+                                .substring(String.valueOf(spending_list.get(i - 1).getSp_date()).length() - 2,
+                                        String.valueOf(spending_list.get(i - 1).getSp_date()).length()));
+                        if (date_before == date) {
+                            j = j + 1;
+                            spending_data_arr[date][j] = spending_list.get(i);
+                        } else {
+                            j = 0;
+                            spending_data_arr[date][j] = spending_list.get(i);
+                        }
+                    } else {
+                        spending_data_arr[date][j] = spending_list.get(i);
+                    }
+                }
+            }
+        ArrayList<Income> income_list = incomeService.income_list(dateData,book_no);
+        Income[][] income_data_arr = new Income[32][income_list.size()];
+        if (income_list.isEmpty() != true) {
+            int j = 0;
+            for (int i = 0; i < income_list.size(); i++) {
+                int date = Integer.parseInt(String.valueOf(income_list.get(i).getIn_date()).substring(
+                        String.valueOf(income_list.get(i).getIn_date()).length() - 2,
+                        String.valueOf(income_list.get(i).getIn_date()).length()));
+                if (i > 0) {
+                    int date_before = Integer.parseInt(String.valueOf(income_list.get(i - 1).getIn_date())
+                            .substring(String.valueOf(income_list.get(i - 1).getIn_date()).length() - 2,
+                                    String.valueOf(income_list.get(i - 1).getIn_date()).length()));
+                    if (date_before == date) {
+                        j = j + 1;
+                        income_data_arr[date][j] = income_list.get(i);
+                    } else {
+                        j = 0;
+                        income_data_arr[date][j] = income_list.get(i);
+                    }
+                } else {
+                    income_data_arr[date][j] = income_list.get(i);
+                }
+            }
+        }
             for (int i = 1; i < today_info.get("start"); i++) {
-                calendarData = new DateData(null, null, null, null, null);
+                calendarData = new DateData(null, null, null, null,  null, null,null);
                 dateList.add(calendarData);
             }
-            // 날짜 삽입
             for (int i = today_info.get("startDay"); i <= today_info.get("endDay"); i++) {
-                ScheduleDto[] schedule_data_arr3 = new ScheduleDto[4];
+                ScheduleDto[] schedule_data_arr3 = new ScheduleDto[i];
+                Spending[] spending_data_arr3 = new Spending[i];
+                Income[] income_data_arr3 = new Income[i];
+
                 schedule_data_arr3 = schedule_data_arr[i];
+                spending_data_arr3 = spending_data_arr[i];
+                income_data_arr3 = income_data_arr[i];
+
                 if (i == today_info.get("today")) {
                     calendarData = new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()),
-                            String.valueOf(i), "today", schedule_data_arr3);
+                            String.valueOf(i), "today", schedule_data_arr3 , spending_data_arr3,income_data_arr3);
                 } else {
                     calendarData = new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()),
-                            String.valueOf(i), "normal_date", schedule_data_arr3);
+                            String.valueOf(i), "normal_date", schedule_data_arr3, spending_data_arr3,income_data_arr3);
                 }
                 dateList.add(calendarData);
             }
-            // 달력 빈 곳 빈 데이터로 삽입
             int index = 7 - dateList.size() % 7;
             if (dateList.size() % 7 != 0) {
                 for (int i = 0; i < index; i++) {
-                    calendarData = new DateData(null, null, null, null, null);
+                    calendarData = new DateData(null, null, null, null,null,null,null);
                     dateList.add(calendarData);
                 }
             }
-            // 배열에 담음
-
-            model.addAttribute("dateList", dateList); // 날짜 데이터 배열
+            model.addAttribute("dateList", dateList);
             model.addAttribute("today_info", today_info);
 
         return "main";
     }
     @RequestMapping(value = "schedule_add.do", method = RequestMethod.GET)
-    public String schedule_add(HttpServletRequest request, ScheduleDto scheduleDto, RedirectAttributes rttr) {
+    public String schedule_add(HttpServletRequest request, ScheduleDto scheduleDto,@Param("book_no") String book_no, RedirectAttributes rttr) {
         ScheduleDao scheduleDao = sqlSession.getMapper(ScheduleDao.class);
         int count = scheduleDao.before_schedule_add_search(scheduleDto);
         String message = "";
-        String url = "redirect:main";
-        if (count >= 4) {
-            message = "스케쥴은 최대 4개만 등록 가능합니다.";
-        } else {
+        String url = "redirect:/main?book_no="+book_no;
             scheduleDao.schedule_add(scheduleDto);
             message = "스케쥴이 등록되었습니다";
-        }
         rttr.addFlashAttribute("message", message);
         return url;
     }
     @RequestMapping(value = "/schedule_show", method = RequestMethod.GET)
-    public String schedule_show(Model model,HttpServletRequest request, @RequestParam("schedule_idx") int idx, RedirectAttributes rttr) {
+    public String schedule_show(Model model,HttpServletRequest request, @RequestParam("schedule_idx") int idx, @RequestParam("book_no") int book_no, RedirectAttributes rttr) {
         ScheduleDao scheduleDao = sqlSession.getMapper(ScheduleDao.class);
-        String url = "redirect:/main";
-        scheduleDao.get(idx);
-        model.addAttribute("schedule_show",scheduleDao.get(idx));
+        String url = "redirect:/main?book_no="+book_no;
+        scheduleDao.get(idx,book_no);
+        model.addAttribute("schedule_show",scheduleDao.get(idx,book_no));
         return null;
     }
 
@@ -155,9 +219,46 @@ public class MainController {
         return null;
     }
 
-    @GetMapping("/login")
-    public String login(){
-        return "login";
+    @RequestMapping("/login")
+    public String login(DateData dateData ,Model model){
+
+        Calendar cal = Calendar.getInstance();
+        DateData calendarData;
+
+        if (dateData.getDate().equals("") && dateData.getMonth().equals("")) {
+            dateData = new DateData(String.valueOf(cal.get(Calendar.YEAR)), String.valueOf(cal.get(Calendar.MONTH)),
+                    String.valueOf(cal.get(Calendar.DATE)), null,null,null,null);
+        }
+        Map<String, Integer> today_info = dateData.today_info(dateData);
+        List<DateData> dateList = new ArrayList<DateData>();
+
+        for (int i = 1; i < today_info.get("start"); i++) {
+            calendarData = new DateData(null, null, null, null,  null, null,null);
+            dateList.add(calendarData);
+        }
+        // 날짜 삽입
+        for (int i = today_info.get("startDay"); i <= today_info.get("endDay"); i++) {
+            if (i == today_info.get("today")) {
+                calendarData = new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()),
+                        String.valueOf(i), "today",null,null,null);
+            } else {
+                calendarData = new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()),
+                        String.valueOf(i), "normal_date",null,null,null);
+            }
+            dateList.add(calendarData);
+        }
+
+        int index = 7 - dateList.size() % 7;
+        if (dateList.size() % 7 != 0) {
+            for (int i = 0; i < index; i++) {
+                calendarData = new DateData(null, null, null, null,null,null,null);
+                dateList.add(calendarData);
+            }
+        }
+
+        model.addAttribute("dateList", dateList);
+        model.addAttribute("today_info", today_info);
+        return "/login";
     }
     @GetMapping("/sessionCheck")
     public String userInfo(){
@@ -202,7 +303,6 @@ public class MainController {
     }
     @RequestMapping("/excel")
     public String excel(@RequestParam("book_no")String book_no){
-
         return "/excel";
     }
     @RequestMapping("/excelIncome")
@@ -229,10 +329,151 @@ public class MainController {
 
     @GetMapping("/addUser")
     public String connectUsers(@RequestParam("book_no")String book_no, @RequestParam("u_mail") String u_mail){
-        System.out.println(book_no);
-        System.out.println(u_mail);
         usersService.connectUsers(book_no,u_mail);
 
         return "/addUser";
+    }
+
+    @GetMapping("/totalChart")
+    public String totalChart(@Param("book_no") String book_no, DateData dateData, Model model){
+
+        List<Users> usersList = usersService.loadUsers(Integer.parseInt(book_no));
+        model.addAttribute("usersList",usersList);
+
+        Map<String, Integer> today_info = dateData.today_info(dateData);
+        String y = today_info.get("search_year").toString();
+        String ym ;
+        if(today_info.get("search_month") < 10){
+            ym = y +"-0"+ today_info.get("search_month").toString();
+
+        }else {
+            ym = y +"-"+ today_info.get("search_month").toString();
+        }
+
+        List<SpendingVO> yearSp = spendingService.yearSp(Integer.parseInt(book_no));
+        List<SpendingVO> monthSp =  spendingService.monthSp(Integer.parseInt(book_no),y);
+        List<SpendingVO> daySp = spendingService.DaySp(Integer.parseInt(book_no),ym);
+
+        List<IncomeVO> yearIn = incomeService.yearIn(Integer.parseInt(book_no));
+        List<IncomeVO> monthIn =  incomeService.monthIn(Integer.parseInt(book_no),y);
+        List<IncomeVO> dayIn = incomeService.DayIn(Integer.parseInt(book_no),ym);
+        int sum = 0;
+        Gson gson = new Gson();
+        JsonArray jArray = new JsonArray();
+        Iterator<SpendingVO> YearSP = yearSp.iterator();
+        while(YearSP.hasNext()){
+            SpendingVO curVO = YearSP.next();
+            JsonObject object = new JsonObject();
+            String dates = curVO.getDates();
+            String money = curVO.getMoney();
+
+            object.addProperty("dates",dates);
+            object.addProperty("money",money);
+            jArray.add(object);
+        }
+        String year_sp = gson.toJson(jArray);
+        model.addAttribute("yearSp",year_sp);
+        jArray = new JsonArray();
+
+        Iterator<SpendingVO> MonthSP = monthSp.iterator();
+        while(MonthSP.hasNext()){
+            SpendingVO curVO = MonthSP.next();
+            JsonObject object = new JsonObject();
+            String dates = curVO.getDates();
+            String money = curVO.getMoney();
+            sum = sum + Integer.parseInt(curVO.getMoney());
+
+            object.addProperty("dates",dates);
+            object.addProperty("money",money);
+            jArray.add(object);
+        }
+        /////
+        String month_sp = gson.toJson(jArray);
+        model.addAttribute("monthSum",sum);
+        sum = 0;
+        model.addAttribute("monthSp",month_sp);
+        jArray = new JsonArray();
+
+        Iterator<SpendingVO> DaySP = daySp.iterator();
+        while(DaySP.hasNext()){
+            SpendingVO curVO = DaySP.next();
+            JsonObject object = new JsonObject();
+            String dates = curVO.getDates();
+            String money = curVO.getMoney();
+            sum = sum + Integer.parseInt(curVO.getMoney());
+
+            object.addProperty("dates",dates);
+            object.addProperty("money",money);
+            jArray.add(object);
+        }
+        String day_sp = gson.toJson(jArray);
+        model.addAttribute("daySum",sum);
+        sum = 0;
+        model.addAttribute("daySp",day_sp);
+        jArray = new JsonArray();
+
+        Iterator<IncomeVO> YearIn = yearIn.iterator();
+        while(YearIn.hasNext()){
+            IncomeVO curVO = YearIn.next();
+            JsonObject object = new JsonObject();
+            String dates = curVO.getDates();
+            String money = curVO.getMoney();
+
+            object.addProperty("dates",dates);
+            object.addProperty("money",money);
+            jArray.add(object);
+        }
+        String year_in = gson.toJson(jArray);
+        model.addAttribute("yearIn",year_in);
+        jArray = new JsonArray();
+
+        Iterator<IncomeVO> MonthIn = monthIn.iterator();
+        while(MonthIn.hasNext()){
+            IncomeVO curVO = MonthIn.next();
+            JsonObject object = new JsonObject();
+            String dates = curVO.getDates();
+            String money = curVO.getMoney();
+            sum = sum + Integer.parseInt(curVO.getMoney());
+
+            object.addProperty("dates",dates);
+            object.addProperty("money",money);
+            jArray.add(object);
+        }
+        model.addAttribute("monthInSum",sum);
+        sum = 0;
+        String month_in = gson.toJson(jArray);
+        model.addAttribute("monthIn",month_in);
+        jArray = new JsonArray();
+
+        Iterator<IncomeVO> DayIn = dayIn.iterator();
+        while(DayIn.hasNext()){
+            IncomeVO curVO = DayIn.next();
+            JsonObject object = new JsonObject();
+            String dates = curVO.getDates();
+            String money = curVO.getMoney();
+            sum = sum + Integer.parseInt(curVO.getMoney());
+
+            object.addProperty("dates",dates);
+            object.addProperty("money",money);
+            jArray.add(object);
+        }
+        model.addAttribute("dayInSum",sum);
+        String day_in = gson.toJson(jArray);
+        model.addAttribute("dayIn",day_in);
+
+
+        model.addAttribute("today_info" ,today_info);
+
+        return "/totalChart";
+    }
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
+    public String deleteUser(){
+        return "/deleteUser";
+    }
+    @RequestMapping(value = "/deleteUser.do", method = RequestMethod.GET)
+    public String deleteUsers(@RequestParam("u_no") String u_no){
+        usersService.deleteSns(Integer.parseInt(u_no));
+        usersService.deleteUser(Integer.parseInt(u_no));
+        return "redirect:/logout";
     }
 }

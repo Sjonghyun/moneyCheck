@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    <link href="/resources/css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
 <form id="excelUploadForm" name="excelUploadForm" enctype="multipart/form-data" method="post" action= "/income_excelUpload.do">
@@ -19,7 +20,7 @@
         </dl>
     </div>
 
-    <div class="bottom">
+    <div class="bottom excel">
         <button type="button" id="addExcelImpoartBtn" class="btn" onclick="check()" ><span>추가</span></button>
         <button type="button" id="" class="btn" onclick="downloadForm()">양식 다운받기</button>
     </div>
@@ -50,9 +51,12 @@
         if (confirm("업로드 하시겠습니까?")) {
             var options = {
                 success : function(data) {
-                    console.log("data: "+data);
                     alert("모든 데이터가 업로드 되었습니다.");
-
+                    window.close();
+                },
+                error: function(e){
+                    alert("업로드에 실패하였습니다.");
+                    window.close();
                 },
                 type : "POST"
             };

@@ -18,4 +18,5 @@ public class Spending {
     private String sp_category;
     private String sp_memo;
     private int book_no;
+
 }

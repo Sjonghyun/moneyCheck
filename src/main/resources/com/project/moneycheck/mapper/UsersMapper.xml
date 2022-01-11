@@ -4,14 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.moneycheck.mapper.UsersMapper">
-<!--    <select id="loadUserBySecurityNo" >-->
-<!--        SELECT * FROM USERS WHERE SC_NO = #{sc_no}-->
-<!--    </select>-->
     <select id="loadUserBySNS" resultType="UsersVO">
         SELECT USERS.* FROM USERS
                                 JOIN SNS_USERS SNS ON USERS.U_NO = SNS.U_NO
         WHERE SNS.ID = #{snsID}
     </select>
+
     <insert id="insertBySNS" parameterType="Map" >
         INSERT INTO SNS_USERS (ID, U_NO) VALUES (#{snsID},#{user.u_no})
     </insert>
@@ -30,10 +28,21 @@
     <update id="connectUsers">
         update users set book_no = #{book_no} where u_mail = #{u_mail}
     </update>
-<!--    <update id="disconnect">-->
-<!--        update users set book_no = #{u_no} where u_mail = #{u_mail}-->
-<!--    </update>-->
     <select id="userMail" resultType="int">
         SELECT COUNT(U_MAIL) FROM USERS WHERE U_MAIL = #{u_mail};
     </select>
+    <select id="loadUsers" resultType="Users">
+        SELECT * FROM USERS WHERE BOOK_NO =#{book_no} order by u_name;
+
+    </select>
+
+    <select id="idPassword" resultType="Users">
+        SELECT * FROM USERS WHERE U_MAIL =#{u_mail} and U_PASSWORD =#{u_password}
+    </select>
+    <delete id="deleteUser">
+        DELETE FROM USERS WHERE U_NO=#{u_no}
+    </delete>
+    <delete id="deleteSns">
+        DELETE FROM SNS_USERS WHERE U_NO=#{u_no}
+    </delete>
 </mapper>

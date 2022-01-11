@@ -1,9 +1,6 @@
 package com.project.moneycheck.dto;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,6 +11,8 @@ import java.util.Map;
 @ToString
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DateData {
     String year = "";
     String month = "";
@@ -21,12 +20,11 @@ public class DateData {
     String value = "";
     String db_startDate = "";
     String db_endDate = "";
-    ScheduleDto[] schedule_data_arr = new ScheduleDto[4];
-    Spending[] spending_data_arr = new Spending[4];
+    ScheduleDto[] schedule_data_arr = new ScheduleDto[0];
+    Spending[] spending_data_arr = new Spending[0];
+    Income[] income_data_arr = new Income[0];
 
-    // 날짜와 관련된 달력정보를 가지는 메서드
     public Map<String, Integer> today_info(DateData dateData) {
-        // 날짜 캘린더 함수에 삽입
         Map<String, Integer> today_Data = new HashMap<String, Integer>();
         Calendar cal = Calendar.getInstance();
         cal.set(Integer.parseInt(dateData.getYear()), Integer.parseInt(dateData.getMonth()), 1);
@@ -55,9 +53,6 @@ public class DateData {
 
         Map<String, Integer> before_after_calendar = before_after_calendar(search_year,search_month);
 
-        // 날짜 관련
-        System.out.println("search_month : " + search_month);
-        // 캘린더 함수 끝
         today_Data.put("start", start);
         today_Data.put("startDay", startDay);
         today_Data.put("endDay", endDay);
@@ -75,7 +70,6 @@ public class DateData {
         return today_Data;
     }
 
-    // 전달 이번달 / 전년도 이번년도
     private Map<String, Integer> before_after_calendar(int search_year, int search_month){
         Map<String, Integer> before_after_data = new HashMap<String, Integer>();
         int before_year = search_year;
@@ -101,25 +95,17 @@ public class DateData {
         return before_after_data;
     }
 
-    // 스케줄 사용시 사용될 생성자
-    public DateData(String year, String month, String date, String value, ScheduleDto[] schedule_data_arr) {
+    public DateData(String year, String month, String date, String value, ScheduleDto[] schedule_data_arr, Spending[] spending_data_arr, Income[] income_data_arr) {
         if ((month != null && month != "") && (date != null && date != "")) {
             this.year = year;
             this.month = month;
             this.date = date;
             this.value = value;
             this.schedule_data_arr = schedule_data_arr;
+            this.spending_data_arr = spending_data_arr;
+            this.income_data_arr = income_data_arr;
         }
     }
-//    public DateData(String year, String month, String date, String value, Spending[] spending_data_arr) {
-//        if ((month != null && month != "") && (date != null && date != "")) {
-//            this.year = year;
-//            this.month = month;
-//            this.date = date;
-//            this.value = value;
-//            this.spending_data_arr = spending_data_arr;
-//        }
-//    }
 
     @Override
     public String toString() {

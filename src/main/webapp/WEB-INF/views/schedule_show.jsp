@@ -11,12 +11,13 @@
     <link rel="stylesheet"
           href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css"
           type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
     <!-- jquery datepicker 끝 -->
     <link rel="stylesheet" href="/resources/css/schedule_show.css">
-    <title>FrmPopup.htm : 팝업창</title>
+    <title></title>
 </head>
-<body>
+<body style="margin: 0 auto">
 <div class="normal_manage_board_modal">
     <script>
         $(function() {
@@ -38,26 +39,13 @@
         });
     </script>
 
-    <!-- share 값에 따라 공개, 비공개 체크 상태 -->
-    <script type="text/javascript">
-
-        if(${schedule_show.schedule_share}=="1")
-        document.getElementById("first_radio").checked = true;
-        else
-        document.getElementById("second_radio").checked = true;
-
-
-    </script>
-
     <div class="top">
         <!-- <div class="close">x</div> -->
-
-
-        <div class="subject">Schedule</div>
+        <div class="subject">일정</div>
     </div>
 
     <div class="bottom">
-        <div class="info">* 변경 혹은 삭제된 일정은 복구할 수 없습니다.)</div>
+        <div class="info"></div>
 
         <form role="form" name="schedule_modify">
             <input type="hidden" name="year" value="${today_info.search_year}" />
@@ -66,20 +54,14 @@
             <div class="contents">
                 <ul>
 
-                    <input type="hidden" name= "schedule_idx" class="text_type1" value=${schedule_show.schedule_idx} ></input>
-                    <li>
-                        <div class="text_subject">순번 :</div>
-                        <div class="text_desc">
-                            <input type="text" name="schedule_num" class="text_type1"
-                                   value=${schedule_show.schedule_num } />
-                        </div>
-                    </li>
+                    <input type="hidden" name= "schedule_idx" class="text_type1" value=${schedule_show.schedule_idx} >
+                    <input type="hidden" name= "book_no" class="text_type1" value=${schedule_show.book_no} >
                     <li>
                         <div class="text_subject">날짜 :</div>
                         <div class="text_desc">
                             <input type="text" name="schedule_date" class="text_type1"
                                    id="testDatepicker" readonly="readonly"
-                                   value=${schedule_show.schedule_date } />
+                                   value= ${schedule_show.schedule_date }>
                         </div>
                     </li>
                     <li>
@@ -96,17 +78,6 @@
                             <textarea name="schedule_desc" class="textarea_type1" rows="5">${schedule_show.schedule_desc}</textarea>
                         </div>
                     </li>
-                    <li>
-                        <div class="text_subject">공유 :</div> <input class="radio"
-                                                                    type="radio" name="schedule_share" id="first_radio" value="1"
-                                                                    checked="checked"/>공개 <input type="radio"
-                                                                                                 name="schedule_share" id="second_radio" value="2"/>비공개
-                    </li>
-                    <li>
-                        <div class="text_subject">색상 :</div> <input class="colorbox"
-                                                                    type='color' name='schedule_mycolor'
-                                                                    value=${schedule_show.schedule_mycolor } />
-                    </li>
                     <li class="button_li">
                         <div class="managebutton">
                             <button type="submit" data-oper='modify'
@@ -116,10 +87,10 @@
                         </div>
                     </li>
                 </ul>
+            </div>
         </form>
     </div>
 </div>
-
 <script>
     /* 수정버튼과 삭제버튼 클릭 시 수행되는 코드 */
     $(document).ready(function(){
@@ -141,8 +112,5 @@
         });
     });
 </script>
-
-
-
 </body>
 </html>

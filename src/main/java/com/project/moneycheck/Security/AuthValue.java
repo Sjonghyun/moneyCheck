@@ -12,4 +12,5 @@ public class AuthValue {
     private String password;
     private int sc_no;
     private String role;
+
 }

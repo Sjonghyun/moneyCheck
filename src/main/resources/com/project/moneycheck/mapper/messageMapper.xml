@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.moneycheck.mapper.MessageMapper">
+    <insert id="insertMsg" parameterType="map">
+        INSERT INTO MESSAGE (NAME, message, TIME, roomNumber, U_NO )
+            VALUES (#{map.name},#{map.message},#{map.time},#{map.roomNumber},#{map.u_no})
+    </insert>
+    <select id="loadMsg" resultType="Message">
+        SELECT * FROM MESSAGE WHERE roomNumber=#{roomNumber} order by time;
+    </select>
+</mapper>

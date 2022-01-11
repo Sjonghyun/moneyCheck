@@ -1,84 +1,91 @@
-$("#datepicker").datepicker({
-    language: 'ko'
-});
-// var result = 0 ;
-// function dispList(select) {
-//     if( select == "0" ) {
-//         result = 0;
-//         return result;
-//     } else if(select == "1") {
-//         result = 1;
-//         return result;
-//     }
-// }
-
-function addRow() {
-
-    mytable = document.getElementById('spend_table');
-
-    row = mytable.insertRow(mytable.rows.length);  //추가할 행
-
-    cell1 = row.insertCell(0);  //실제 행 추가 여기서의 숫자는 컬럼 수
-    cell2 = row.insertCell(1);
-    cell3 = row.insertCell(2);
-    cell4 = row.insertCell(3);
-    cell5 = row.insertCell(4);
-    cell6 = row.insertCell(5);
-    cell7 = row.insertCell(6);
-
-    cell1.innerHTML = "<td><input type='checkbox' name='checked' onclick='checkSelectAll(this)'></td>";  //추가한 행에 원하는  요소추가
-    cell2.innerHTML = "<td><input type='text' name='sp_date' id='datepicker'</td>";
-    cell3.innerHTML = "<td><input type='text' name='sp_used'></td>";
-    cell4.innerHTML = "<td><input type='text' name='sp_money'></td>";
-    cell5.innerHTML = "<td><input type='text' name='sp_category'></td>";
-    cell6.innerHTML = "<td><input type='text' name='sp_account'></td>";
-    cell7.innerHTML = "<td><input type='text' name='sp_memo'></td>";
+// $("#datepicker").datepicker({
+//     language: 'ko'
+// });
+function addrow(){
+    if(document.form.sp_date.value =="") {
+        alert("날짜를 선택해주세요");
+        return;
+    }
+    if(document.form.sp_used.value==""){
+        form.sp_used.focus();
+        return;
+    }
+    if(document.form.sp_money.value==""){
+        form.sp_money.focus();
+        return;
+    }
+    if(document.form.sp_category.value==""){
+        form.sp_category.focus();
+        return;
+    }
+    if(document.form.sp_account.value==""){
+        form.sp_acoount.focus();
+        return;
+    }
+    document.form.submit();
 }
-
 function deleteRow(){ //삭제
+        var checked = $("input:checkbox[name='checked']:checked").val();
+        var book_no = document.getElementById('book_no').value;
+        var year = document.getElementById('year').value;
+        var month = document.getElementById('month').value;
     if($("input:checkbox[name='checked']:checked").length == 0){
         alert("삭제할 항목을 선택해 주세요");
         return;
     }
     $("input:checkbox[name='checked']:checked").each(function (k,kVal){
         var a = kVal.parentElement.parentElement;
-        var checked = $("input:checkbox[name='checked']:checked").val();
+        var data = kVal.value;
         $(a).remove();
 
         if($(a).remove()){
             $("input:checkbox[name='selectall']:checked").prop("checked",false);
-            if($("input:checkbox[name='checked']:checked").val() != null) {
-                document.form.method = "POST"
-                document.form.action = '/delete_spending?sp_no=' + checked;
-                document.form.submit();
+                $.ajax({
+                    type:"post",
+                    url:"/delete_spending",
+                    data:{
+                        sp_no: data,
+                        book_no:book_no,
+                        year:year,
+                        month:month
+                    },
+                    success:function(){
+                    },
+                    error:function(e){
+                        console.log(e);
+                    }
+                });
             }
-        }
     });
 }
-function income_addRow(){
-
-    mytable = document.getElementById('income_table');
-
-    row = mytable.insertRow(mytable.rows.length);  //추가할 행
-
-    cell1 = row.insertCell(0);  //실제 행 추가 여기서의 숫자는 컬럼 수
-    cell2 = row.insertCell(1);
-    cell3 = row.insertCell(2);
-    cell4 = row.insertCell(3);
-    cell5 = row.insertCell(4);
-    cell6 = row.insertCell(5);
-    cell7 = row.insertCell(6);
-
-    cell1.innerHTML = "<td><input type='checkbox' name='checked' onclick='checkSelectAll(this)'></td>";  //추가한 행에 원하는  요소추가
-    cell2.innerHTML = "<td><input type='text' name='in_date' id='datepicker' ></td>";
-    cell3.innerHTML = "<td><input type='text' name='in_used'></td>";
-    cell4.innerHTML = "<td><input type='text' name='in_money'></td>";
-    cell5.innerHTML = "<td><input type='text' name='in_category'></td>";
-    cell6.innerHTML = "<td><input type='text' name='in_account'></td>";
-    cell7.innerHTML = "<td><input type='text' name='in_memo'></td>";
-
+function income_addrow(){
+    if(document.form.in_date.value =="") {
+        alert("날짜를 선택해주세요");
+        return;
+    }
+    if(document.form.in_used.value==""){
+        form.in_used.focus();
+        return;
+    }
+    if(document.form.in_money.value==""){
+        form.in_money.focus();
+        return;
+    }
+    if(document.form.in_category.value==""){
+        form.in_category.focus();
+        return;
+    }
+    if(document.form.in_account.value==""){
+        form.in_acoount.focus();
+        return;
+    }
+    document.form.submit();
 }
 function income_deleteRow(){ //삭제
+    var book_no = document.getElementById('book_no').value;
+    var year = document.getElementById('year').value;
+    var month = document.getElementById('month').value;
+
     if($("input:checkbox[name='checked']:checked").length == 0){
         alert("삭제할 항목을 선택해 주세요");
         return;
@@ -86,15 +93,26 @@ function income_deleteRow(){ //삭제
     $("input:checkbox[name='checked']:checked").each(function (k,kVal){
         var a = kVal.parentElement.parentElement;
         var checked = $("input:checkbox[name='checked']:checked").val();
+        var data = kVal.value;
         $(a).remove();
 
         if($(a).remove()){
             $("input:checkbox[name='selectall']:checked").prop("checked",false);
-            if($("input:checkbox[name='checked']:checked").val() != null){
-                document.form.method="POST"
-                document.form.action = '/delete_income?sp_no='+checked;
-                document.form.submit();
-            }
+            $.ajax({
+                type:"post",
+                url:"/delete_income",
+                data:{
+                    in_no: data,
+                    book_no:book_no,
+                    year:year,
+                    month:month
+                },
+                success:function(){
+                },
+                error:function(e){
+                    console.log(e);
+                }
+            });
         }
     });
 }
@@ -138,17 +156,88 @@ $(function() {
         wrapCreateBoardByMask();
     });
 
-//닫기 버튼을 눌렀을 때
     $('.normal_move_board_modal .top .close').click(function(e) {
-//링크 기본동작은 작동하지 않도록 한다.
         e.preventDefault();
         $('#mask_board_move, .normal_move_board_modal').hide();
     });
-
-//검은 막을 눌렀을 때
     $('#mask_board_move').click(function() {
         $(this).hide();
         $('.normal_move_board_modal').hide();
     });
 
 });
+var idx;
+var num;
+var subject;
+var desc;
+var date;
+var book_no;
+
+$(function() {
+    $("#testDatepicker")
+        .datepicker(
+            {
+
+                dateFormat : "yy-mm-dd",
+                changeMonth : true,
+                changeYear : true,
+                dayNames : [ '월요일', '화요일', '수요일', '목요일',
+                    '금요일', '토요일', '일요일' ],
+                dayNamesMin : [ '월', '화', '수', '목', '금',
+                    '토', '일' ],
+                monthNamesShort : [ '1', '2', '3', '4',
+                    '5', '6', '7', '8', '9', '10',
+                    '11', '12' ]
+            });
+});
+function scheduleAdd() {
+    var schedule_add_form = document.schedule_add;
+    if (schedule_add_form.schedule_date.value == ""
+        || schedule_add_form.schedule_date.value == null) {
+        alert("날짜를 입력해주세요.");
+        schedule_add_form.schedule_date.focus();
+        return false;
+    } else if (schedule_add_form.schedule_subject.value == ""
+        || schedule_add_form.schedule_subject.value == null) {
+        alert("제목을 입력해주세요.");
+        schedule_add_form.schedule_date.focus();
+        return false;
+    }
+    schedule_add_form.submit();
+}
+
+function spendPopup() {
+    var book_no = document.getElementById("book_no").value;
+    window.open("/excel?book_no="+book_no, "a", "width=500, height=300, left=100, top=50"); }
+function incomePopup() {
+    var book_no = document.getElementById("book_no").value;
+    window.open("/excelIncome?book_no="+book_no, "a", "width=500, height=300, left=100, top=50"); }
+function invitePopup() {
+    var book_no = document.getElementById("book_no").value;
+    window.open("/invite?book_no="+book_no, "a", "width=500, height=300, left=500, top=100"); }
+
+function emailSend(){
+    let clientEmail = document.getElementById('emailText').value;
+    let name = document.getElementById('u_name').value;
+    let book_no = document.getElementById('book_no').value;
+
+    $.ajax({
+        type:"POST",
+        url:"/invite.do",
+        data:{ u_mail:clientEmail,
+            name:name,
+            book_no:book_no},
+        success: function(data){
+            if(data == 1) {
+                alert("초대가 발송되었습니다.");
+                window.close();
+            }else{
+                alert("아이디가 없습니다.");
+            }
+        },
+        error: function (e){
+            alert("초대 발송에 실패하였습니다.")
+            console.log('실패',e);
+        }
+    });
+}

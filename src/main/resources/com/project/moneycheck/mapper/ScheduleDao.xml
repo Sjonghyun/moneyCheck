@@ -8,11 +8,11 @@
         insert into schedule
         <include refid="schedule_cols"></include>
         values
-        (nextval('schedule_sq') ,#{schedule_num}, #{schedule_subject}, #{schedule_desc}, #{schedule_date})
+        (nextval('schedule_sq') ,#{schedule_num}, #{schedule_subject}, #{schedule_desc}, #{schedule_date}, #{book_no})
     </insert>
 
     <sql id="schedule_cols">
-        (schedule_idx, schedule_num, schedule_subject, schedule_desc, schedule_date)
+        (schedule_idx, schedule_num, schedule_subject, schedule_desc, schedule_date, book_no)
     </sql>
 
     <select id="before_schedule_add_search" resultType="int">
@@ -22,14 +22,14 @@
 
     <select id="schedule_list" resultType="ScheduleDto">
 
-        select * from schedule where schedule_date >= #{db_startDate} and #{db_endDate} >= schedule_date
+        select * from schedule where schedule_date >= #{dateData.db_startDate} and #{dateData.db_endDate} >= schedule_date and book_no=#{book_no}
         order by schedule_date, schedule_num, schedule_idx
     </select>
 
     <!-- 리스트 가져오기 -->
-    <select id="get" resultType="ScheduleDto">
+    <select id="get" resultType="ScheduleDto" >
 	<![CDATA[
-        select * from schedule where schedule_idx = #{schedule_idx}
+        select * from schedule where schedule_idx = #{idx} and book_no = #{book_no}
         ]]>
 	</select>
     <update id="update">
@@ -37,12 +37,12 @@
         set schedule_num = #{schedule_num},
             schedule_subject = #{schedule_subject},
             schedule_desc = #{schedule_desc},
-            schedule_date=#{schedule_date},
-        where schedule_idx=#{schedule_idx}
+            schedule_date=#{schedule_date}
+        where schedule_idx=#{schedule_idx} and book_no= #{book_no}
     </update>
 
     <!-- 삭제하기 -->
     <delete id="delete">
-        delete from schedule where schedule_idx=#{schedule_idx}
+        delete from schedule where schedule_idx=#{schedule_idx} and book_no= #{book_no}
     </delete>
 </mapper>

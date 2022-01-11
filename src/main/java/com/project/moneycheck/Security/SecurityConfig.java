@@ -19,12 +19,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    private final AuthSuccessHandler authSuccessHandler;
     private final AuthFailHandler authFailHandler;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -48,10 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .oauth2Login()
                 .loginPage("/login")
-                .defaultSuccessUrl("/main")
+                .defaultSuccessUrl("/index")
                 .failureUrl("/login")
                 .userInfoEndpoint().userService(principalOAuth2UserService);
     }
-
-
 }
