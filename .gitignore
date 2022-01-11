@@ -34,3 +34,5 @@ build/
 
 # ignore properties file #
 application.properties
+application-mail.properties
+application-oauth.properties
