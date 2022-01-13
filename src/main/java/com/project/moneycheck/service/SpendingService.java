@@ -35,19 +35,11 @@ public class SpendingService {
         spendingMapper.delete_spending(sp_no);
     }
 
-    public int spendCount(int book_no, String date){
-
-        return spendingMapper.spendCount(book_no, date);
-    }
-
     public ArrayList<Spending> spend_list(DateData dateData, @Param("book_no")int book_no){
 
         return spendingMapper.spend_list(dateData,book_no);
     }
 
-    public int spCount(@Param("sp_date") String sp_date){
-        return spendingMapper.spCount(sp_date);
-    }
 
     public List<SpendingVO> yearSp(@Param("book_no") int book_no){
         return spendingMapper.yearSp(book_no);

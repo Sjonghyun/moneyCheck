@@ -40,30 +40,29 @@
             <input type="hidden" name="year" value="${today_info.search_year}" />
             <input type="hidden" name="month" value="${today_info.search_month-1}" />
             <div class="navigation">
-                <a class="before_after_year"
-                   href="/login?year=${today_info.search_year-1}&month=${today_info.search_month-1}">
-                    &lt;&lt; <!-- 이전해 -->
-                </a> <a class="before_after_month"
-                        href="/login?year=${today_info.before_year}&month=${today_info.before_month}">
-                &lt; <!-- 이전달 -->
-            </a> <span class="this_month"> &nbsp;${today_info.search_year}년
-                            <c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}월
-			            	</span> <a class="before_after_month"
-                                       href="/login?year=${today_info.after_year}&month=${today_info.after_month}">
-                <!-- 다음달 --> &gt;
-            </a> <a class="before_after_year"
-                    href="/login?year=${today_info.search_year+1}&month=${today_info.search_month-1}">
-                <!-- 다음해 --> &gt;&gt;
-            </a>
+                <a class="before_after_year" href="/login?year=${today_info.search_year-1}&month=${today_info.search_month-1}">
+                    &lt;&lt;
+                </a>
+                <a class="before_after_month" href="/login?year=${today_info.before_year}&month=${today_info.before_month}">
+                &lt;
+                </a>
+                <span class="this_month"> &nbsp;${today_info.search_year}년
+                    <c:if test="${today_info.search_month<10}">
+                        0
+                    </c:if>
+                    ${today_info.search_month}월
+                </span>
+                <a class="before_after_month" href="/login?year=${today_info.after_year}&month=${today_info.after_month}">
+                    &gt;
+                </a>
+                <a class="before_after_year" href="/login?year=${today_info.search_year+1}&month=${today_info.search_month-1}">
+                     &gt;&gt;
+                </a>
             </div>
             <div class="today_button_div">
-                <button type="button" class="buttonstyle"
-                        onclick="javascript:location.href='/login'"
-                        style="height: 30px; width: 80px;">Today
-                </button>
+                <button type="button" class="buttonstyle" onclick="javascript:location.href='/login'" style="height: 30px; width: 80px;">Today</button>
             </div>
             <table class="calendar_body">
-
                 <thead>
                 <tr bgcolor="#A0D9E2">
                     <td class="day sun">일</td>
@@ -77,8 +76,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <c:forEach var="dateList" items="${dateList}"
-                               varStatus="date_status">
+                    <c:forEach var="dateList" items="${dateList}" varStatus="date_status">
                     <c:choose>
                     <c:when test="${dateList.value=='today'}">
                     <c:if test="${date_status.index%7==0}">
@@ -110,6 +108,7 @@
             </table>
         </form>
     </div>
+</div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

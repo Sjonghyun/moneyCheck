@@ -32,10 +32,6 @@ public class IncomeService {
         return incomeMapper.income_list(dateData,book_no);
     }
 
-    public int inCount(@Param("in_date") String in_date){
-        return incomeMapper.inCount(in_date);
-    }
-
     public List<IncomeVO> yearIn(@Param("book_no") int book_no){
         return incomeMapper.yearIn(book_no);
     }

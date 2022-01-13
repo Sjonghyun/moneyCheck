@@ -16,28 +16,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
-<input id="book_no"  type="hidden" name="book_no" value="${param.book_no}">
 <jsp:include page="header.jsp"></jsp:include>
 <jsp:include page="sidebar.jsp"></jsp:include>
 
 <div class="col-md-10 mz-0">
     <div class="black"></div>
     <div class="navigation">
-        <a class="before_after_year"
-           href="/insert_income?year=${today_info.search_year-1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
-            &lt;&lt; <!-- 이전해 -->
-        </a> <a class="before_after_month"
-                href="/insert_income?year=${today_info.before_year}&month=${today_info.before_month}&book_no=${param.book_no}">
-        &lt; <!-- 이전달 -->
-    </a> <span class="this_month"> &nbsp;${today_info.search_year}년
-                                <c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}월
-                                </span> <a class="before_after_month"
-                                           href="/insert_income?year=${today_info.after_year}&month=${today_info.after_month}&book_no=${param.book_no}">
-        <!-- 다음달 --> &gt;
-    </a> <a class="before_after_year"
-            href="/insert_income?year=${today_info.search_year+1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
-        <!-- 다음해 --> &gt;&gt;
-    </a>
+        <a class="before_after_year" href="/insert_income?year=${today_info.search_year-1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
+            &lt;&lt;
+        </a>
+        <a class="before_after_month" href="/insert_income?year=${today_info.before_year}&month=${today_info.before_month}&book_no=${param.book_no}">
+           &lt
+        </a>
+        <span class="this_month"> &nbsp;${today_info.search_year}년
+           <c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}월
+        </span>
+        <a class="before_after_month" href="/insert_income?year=${today_info.after_year}&month=${today_info.after_month}&book_no=${param.book_no}">
+            &gt;
+        </a>
+        <a class="before_after_year" href="/insert_income?year=${today_info.search_year+1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
+            &gt;&gt;
+        </a>
     </div>
         <div class="tab-content">
         <ul class="nav nav-tabs">
@@ -70,9 +69,7 @@
                             <th>메모</th>
                         </tr>
                         <tr>
-                            <td>
-<%--                                <input type='checkbox' name='checked' onclick='checkSelectAll(this)'>--%>
-                            </td>
+                            <td></td>
                             <td><input type='text' name='in_date'  id='testDatepicker' readonly='readonly'></td>
                             <td><input type='text' name='in_used'></td>
                             <td><input type='text' name='in_money'></td>
@@ -96,11 +93,8 @@
             </div>
         </div>
     </div>
-
     </div>
     <div class="row">
-
-
     </div>
 </div>
 <div class="row">
@@ -111,7 +105,6 @@
                     <a class="navbar-brand" href="">MONEYCHECK</a>
                 </div>
                 <div class="col-md-6">
-
                 </div>
                 <div class="col-md-3">
                     <c:choose>
@@ -120,7 +113,6 @@
                         </c:when>
                         <c:otherwise>
                              이번 달 수입 : &nbsp;${inMoney}원
-
                         </c:otherwise>
                     </c:choose>
                 </div>

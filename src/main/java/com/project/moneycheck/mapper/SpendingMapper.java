@@ -20,15 +20,10 @@ public interface SpendingMapper {
 
     void delete_spending(int sp_no);
 
-    void spend_date(String date);
-
-    int spendCount(int book_no , String date);
-
     void excelUpload(Map<String,Object> paramMap)throws Exception;
 
     ArrayList<Spending> spend_list(DateData dateData, @Param("book_no")int book_no);
 
-    int spCount(@Param("sp_date") String sp_date);
 
     List<SpendingVO> yearSp(@Param("book_no") int book_no);
     List<SpendingVO> monthSp(@Param("book_no") int book_no, @Param("date") String date);

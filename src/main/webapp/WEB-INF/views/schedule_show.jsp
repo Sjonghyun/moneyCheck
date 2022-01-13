@@ -5,15 +5,10 @@
 
 <html lang="ko">
 <head>
-    <script
-            src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <!-- jquery datepicker -->
-    <link rel="stylesheet"
-          href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css"
-          type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-    <!-- jquery datepicker 끝 -->
     <link rel="stylesheet" href="/resources/css/schedule_show.css">
     <title></title>
 </head>
@@ -24,7 +19,6 @@
             $("#testDatepicker")
                 .datepicker(
                     {
-
                         dateFormat : "yy-mm-dd",
                         changeMonth : true,
                         changeYear : true,
@@ -40,7 +34,6 @@
     </script>
 
     <div class="top">
-        <!-- <div class="close">x</div> -->
         <div class="subject">일정</div>
     </div>
 
@@ -68,8 +61,6 @@
                         <div class="text_subject">제목 :</div>
                         <div class="text_desc">
                             <textarea name="schedule_subject" class="textarea_type1" rows="1" style="resize: none;">${schedule_show.schedule_subject }</textarea>
-                            <%-- <input type="text" name="schedule_subject" class="text_type1"
-                                value=${schedule_show.schedule_subject }></input> --%>
                         </div>
                     </li>
                     <li style="margin-bottom: 75px;">
@@ -92,7 +83,6 @@
     </div>
 </div>
 <script>
-    /* 수정버튼과 삭제버튼 클릭 시 수행되는 코드 */
     $(document).ready(function(){
         var formObj = $("form");
 

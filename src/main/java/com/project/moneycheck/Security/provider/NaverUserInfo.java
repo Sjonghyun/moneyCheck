@@ -8,7 +8,6 @@ import java.util.Map;
 //@AllArgsConstructor
 public class NaverUserInfo implements OAuth2Info {
 
-    // fianl 유무 차이 확인하기
     private Map<String, Object> attributes;
 
     public NaverUserInfo(Map<String, Object> attributes) {

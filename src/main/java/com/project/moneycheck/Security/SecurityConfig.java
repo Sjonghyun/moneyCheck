@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PrincipalOAuth2UserService principalOAuth2UserService;
-//    private final AuthSuccessHandler authSuccessHandler;
     private final AuthFailHandler authFailHandler;
 
     @Override
@@ -24,8 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
 				 .antMatchers("/user/**").hasRole("USER")
-//				 .antMatchers("/host/**").hasRole("HOST")
-//				 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
             .and()
                 .logout()

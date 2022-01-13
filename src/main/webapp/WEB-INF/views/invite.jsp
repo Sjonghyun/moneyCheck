@@ -17,31 +17,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
-        <c:choose>
-            <c:when test="${!empty user}">
-            <div class="col-md-10 ">
-                <div class="mz-0">
-                    <div class="black"></div>
+    <c:choose>
+        <c:when test="${!empty user}">
+        <div class="col-md-10 ">
+            <div class="mz-0">
+                <div class="black"></div>
+                <div>
+                    <p>초대를 하시면 가계부를 공유하게 됩니다.</p>
+                    <p>회원만 초대 가능하며 초대상대가 비회원인 경우,</p>
+                    <p>회원가입 후 진행해주세요</p>
+                    <br>
                     <div>
-                        <p>초대를 하시면 가계부를 공유하게 됩니다.</p>
-                        <p>회원만 초대 가능하며 초대상대가 비회원인 경우,</p>
-                        <p>회원가입 후 진행해주세요</p>
-                        <br>
-                        <div>
-                            아이디:  <input type="text" id="emailText">
-                        </div>
-                        <input type="hidden" value="${user.u_name}" id="u_name">
-                        <input type="hidden" value="${user.book_no}" id="book_no">
-                        <div class="check_font" id="mail_check"></div>
-                        <div class="text-center">
-                            <button class="btn btn-secondary btn-sm" onclick="emailSend()">초대하기</button>
-                        </div>
+                        아이디:  <input type="text" id="emailText">
+                    </div>
+                    <input type="hidden" value="${user.u_name}" id="u_name">
+                    <input type="hidden" value="${user.book_no}" id="book_no">
+                    <div class="check_font" id="mail_check"></div>
+                    <div class="text-center">
+                        <button class="btn btn-secondary btn-sm" onclick="emailSend()">초대하기</button>
                     </div>
                 </div>
             </div>
-            </c:when>
-        </c:choose>
-    </div>
+        </div>
+        </c:when>
+    </c:choose>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

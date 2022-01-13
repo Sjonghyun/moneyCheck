@@ -1,6 +1,5 @@
 package com.project.moneycheck.security.provider;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;

@@ -36,21 +36,21 @@
 <div class="col-md-10">
 <div class="black"></div>
     <div class="navigation">
-        <a class="before_after_year"
-           href="/inChart?year=${today_info.search_year-1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
-            &lt;&lt; <!-- 이전해 -->
-        </a> <a class="before_after_month"
-                href="/inChart?year=${today_info.before_year}&month=${today_info.before_month}&book_no=${param.book_no}">
-        &lt; <!-- 이전달 -->
-    </a> <span class="this_month"> &nbsp;${today_info.search_year}년
-                                <c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}월
-                                </span> <a class="before_after_month"
-                                           href="/inChart?year=${today_info.after_year}&month=${today_info.after_month}&book_no=${param.book_no}">
-        <!-- 다음달 --> &gt;
-    </a> <a class="before_after_year"
-            href="/inChart?year=${today_info.search_year+1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
-        <!-- 다음해 --> &gt;&gt;
-    </a>
+        <a class="before_after_year" href="/inChart?year=${today_info.search_year-1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
+            &lt;&lt;
+        </a>
+        <a class="before_after_month" href="/inChart?year=${today_info.before_year}&month=${today_info.before_month}&book_no=${param.book_no}">
+            &lt;
+        </a>
+        <span class="this_month">
+            &nbsp;${today_info.search_year}년<c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}월
+        </span>
+        <a class="before_after_month" href="/inChart?year=${today_info.after_year}&month=${today_info.after_month}&book_no=${param.book_no}">
+            &gt;
+        </a>
+        <a class="before_after_year" href="/inChart?year=${today_info.search_year+1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
+         &gt;&gt;
+        </a>
     </div>
     <div class="chart-container chart">
         <select id="chartType" name="selectBox">
@@ -59,7 +59,6 @@
             <option value="doughnut">도넛형</option>
             <option value="bar">막대형</option>
             <option value="line">꺽은선형</option>
-
         </select>
         <select id="selectBox" name="selectBox">
             <option value="">선택</option>
@@ -82,7 +81,6 @@
     </div>
 </div>
     <script>
-        // $(document).ready(function() {
             $('#selectBox').change(function() {
                 var result = $('#selectBox option:selected').val();
                 if (result == '1') {
@@ -105,8 +103,6 @@
                     $('.div3').hide();
                 }
             });
-        // });
-        // $(document).ready(function() {
             $('#chartType').change(function () {
                 var type = $('#chartType option:selected').val();
                 if (type == "pie") {
@@ -123,7 +119,6 @@
                     chartType = '';
                 }
             });
-        // });
         var book_no = document.getElementById("book_no");
         function createChart() {
             $('#year').remove();
@@ -137,15 +132,15 @@
             $('.div2').append(monthHTML);
             $('.div3').append(dayHTML);
 
-            var yearSp = ${yearIn}; // 년별
+            var yearSp = ${yearIn};
             var yearjson = JSON.stringify(yearSp);
             var Ydata = JSON.parse(yearjson);
 
-            var monthSp = ${monthIn}; //월별
+            var monthSp = ${monthIn};
             var monthjson = JSON.stringify(monthSp);
             var Mdata = JSON.parse(monthjson);
 
-            var daySp = ${dayIn}; // 일별
+            var daySp = ${dayIn};
             var dayjson = JSON.stringify(daySp);
             var Ddata = JSON.parse(dayjson);
 
@@ -260,7 +255,6 @@
 
             return color;
         }
-
     </script>
 </body>
 </html>

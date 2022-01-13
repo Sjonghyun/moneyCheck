@@ -16,16 +16,9 @@ import java.util.Map;
 public class PrincipalUser implements UserDetails, OAuth2User {
 
     private AuthInfo authInfo;
-//    private UsersVO user;
     private Map<String, Object> attributes;
 
-////    일반 로그인을 위한 생성자
-//    public PrincipalUser(AuthValue authValue, AuthInfo authInfo) {
-//        this.authInfo = authInfo;
-//        this.authInfo.setAuthValue(authValue);
-//    }
 
-//    OAuth2User 로그인을 위한 생성자
     public PrincipalUser(AuthInfo authInfo, Map<String, Object> attributes) {
         this.authInfo = authInfo;
         this.attributes = attributes;
@@ -41,7 +34,6 @@ public class PrincipalUser implements UserDetails, OAuth2User {
         return authInfo;
     }
 
-    //   for OAuth2User
     @Override
     public <A> A getAttribute(String name) {
         return OAuth2User.super.getAttribute(name);
@@ -52,7 +44,6 @@ public class PrincipalUser implements UserDetails, OAuth2User {
     }
 
 
-//  for  AuthenticationPrincipal
     @Override
     public String getName() {
 //        구글만 쓸 거면 의미가 있는데 여러 sns 사용하는 경우 큰 쓸모가 없음.
@@ -61,7 +52,6 @@ public class PrincipalUser implements UserDetails, OAuth2User {
 
     @Override
     public String getPassword() {
-//        return authInfo.getAuthValue().getPassword();
         return "";
     }
 

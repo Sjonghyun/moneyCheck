@@ -387,7 +387,7 @@ public class MainController {
             object.addProperty("money",money);
             jArray.add(object);
         }
-        /////
+
         String month_sp = gson.toJson(jArray);
         model.addAttribute("monthSum",sum);
         sum = 0;

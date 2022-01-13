@@ -36,15 +36,6 @@ public class ChatController {
         return mv;
     }
 
-    //방페이지
-    @RequestMapping("/room")
-    public ModelAndView room(){
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("room");
-        return mv;
-    }
-    
-    //방생성
     @RequestMapping("/createRoom")
     public @ResponseBody List<Room> createRoom(@RequestParam HashMap<Object,Object> params){
         String roomName = (String) params.get("roomName");
@@ -56,15 +47,12 @@ public class ChatController {
         }
         return roomList;
     }
-    
-    //방정보가져오기
+
     @RequestMapping("/getRoom")
     public @ResponseBody List<Room> getRoom(@RequestParam HashMap<Object, Object> params){
         return roomList;
     }
 
-    
-    //채팅방
     @RequestMapping("/moveChating")
     public ModelAndView chating(@RequestParam HashMap<Object,Object> params){
         List<Users> usersList = usersService.loadUsers(Integer.parseInt(params.get("book_no").toString()));
@@ -75,12 +63,12 @@ public class ChatController {
         mv.addObject("messageList",messageList);
         int roomNumber = Integer.parseInt((String) params.get("roomNumber"));
 
-//        List<Room> new_list = roomList.stream().filter(o->o.getRoomNumber() == roomNumber).collect(Collectors.toList());
             mv.addObject("roomName" , params.get("roomName"));
             mv.addObject("roomNumber", params.get("roomNumber"));
             mv.setViewName("chat");
         return  mv;
     }
+
     @PostMapping("/insertDB")
     @ResponseBody
     public void insertDB(@RequestParam  HashMap<Object, Object> params){

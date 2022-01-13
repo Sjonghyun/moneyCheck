@@ -34,33 +34,31 @@
         <form name="calendarFrm" id="calendarFrm" action="" method="GET">
             <input type="hidden" name="year" value="${today_info.search_year}" />
             <input type="hidden" name="month" value="${today_info.search_month-1}" />
-                        <div class="navigation">
-                            <a class="before_after_year"
-                               href="/main?year=${today_info.search_year-1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
-                                &lt;&lt; <!-- 이전해 -->
-                            </a> <a class="before_after_month"
-                                    href="/main?year=${today_info.before_year}&month=${today_info.before_month}&book_no=${param.book_no}">
-                            &lt; <!-- 이전달 -->
-                        </a> <span class="this_month"> &nbsp;${today_info.search_year}년
-                            <c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}월
-			            	</span> <a class="before_after_month"
-                                    href="/main?year=${today_info.after_year}&month=${today_info.after_month}&book_no=${param.book_no}">
-                            <!-- 다음달 --> &gt;
-                        </a> <a class="before_after_year"
-                                href="/main?year=${today_info.search_year+1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
-                            <!-- 다음해 --> &gt;&gt;
+                    <div class="navigation">
+                        <a class="before_after_year" href="/main?year=${today_info.search_year-1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
+                            &lt;&lt;
                         </a>
-                        </div>
+                        <a class="before_after_month" href="/main?year=${today_info.before_year}&month=${today_info.before_month}&book_no=${param.book_no}">
+                            &lt;
+                        </a>
+                        <span class="this_month"> &nbsp;${today_info.search_year}년
+                        <c:if test="${today_info.search_month<10}">
+                            0
+                        </c:if>
+                                ${today_info.search_month}월
+                        </span>
+                        <a class="before_after_month" href="/main?year=${today_info.after_year}&month=${today_info.after_month}&book_no=${param.book_no}">
+                            &gt;
+                        </a>
+                        <a class="before_after_year" href="/main?year=${today_info.search_year+1}&month=${today_info.search_month-1}&book_no=${param.book_no}">
+                            &gt;&gt;
+                        </a>
+                    </div>
                     <div class="today_button_div">
-                        <button type="button" class="buttonstyle"
-                                onclick="javascript:location.href='/main?book_no=${param.book_no}'"
-                                style="height: 30px; width: 80px;">Today</button>
-                        <button type="button"
-                                class="buttonstyle board_move openMask_board_move pointer"
-                                style="height: 30px; width: 130px;">Add Schedule</button>
+                        <button type="button" class="buttonstyle" onclick="javascript:location.href='/main?book_no=${param.book_no}'" style="height: 30px; width: 80px;">Today</button>
+                        <button type="button" class="buttonstyle board_move openMask_board_move pointer" style="height: 30px; width: 130px;">Add Schedule</button>
                     </div>
                     <table class="calendar_body">
-
                         <thead>
                         <tr bgcolor="#A0D9E2">
                             <td class="day sun">일</td>
@@ -74,8 +72,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <c:forEach var="dateList" items="${dateList}"
-                                       varStatus="date_status">
+                            <c:forEach var="dateList" items="${dateList}" varStatus="date_status">
                             <c:choose>
                             <c:when test="${dateList.value=='today'}">
                             <c:if test="${date_status.index%7==0}">
@@ -108,7 +105,7 @@
                                         <c:if test="${!empty spendList}">
                                             <c:set var="count" value="${count +1}"/>
                                             <c:set var="spResult" value="${spResult + count}"/>
-                                             <c:set var="count" value="0"/>
+                                            <c:set var="count" value="0"/>
                                         </c:if>
                                     </c:forEach>
                                     <c:if test="${spResult ne 0}">
@@ -128,14 +125,12 @@
                                             <span class="date_subject">수입 ${inResult}건</span>
                                        </div>
                                     </c:if>
-                                    <c:forEach var="scheduleList"
-                                               items="${dateList.schedule_data_arr}"
-                                               varStatus="schedule_data_arr_status">
-
-                                        <a
-                                                href="/schedule_show?schedule_idx=${scheduleList.schedule_idx}&book_no=${user.book_no}"
+                                    <c:forEach var="scheduleList" items="${dateList.schedule_data_arr}" varStatus="schedule_data_arr_status">
+                                        <a href="/schedule_show?schedule_idx=${scheduleList.schedule_idx}&book_no=${user.book_no}"
                                                 onclick="window.open(this.href, '_blank', 'width=550,height=600,left=680%, top=200%, toolbars=no,scrollbars=no'); return false;"
-                                                class="date_subject">${scheduleList.schedule_subject}</a>
+                                           class="date_subject">
+                                                ${scheduleList.schedule_subject}
+                                        </a>
                                         <br>
 
                                     </c:forEach>
@@ -168,12 +163,6 @@
                     <div class="contents">
                         <input type="hidden" name="book_no" id="book_no" value="${user.book_no}">
                         <ul>
-<%--                            <li>--%>
-<%--                                <div class="text_subject">순번 :</div>--%>
-<%--                                <div class="text_desc">--%>
-<%--                                    <input type="text" name="schedule_num" class="text_type1" />--%>
-<%--                                </div>--%>
-<%--                            </li>--%>
                             <li>
                                 <div class="text_subject">날짜 :</div>
                                 <div class="text_desc">
@@ -193,27 +182,15 @@
                                     <textarea name="schedule_desc" class="textarea_type1" rows="5"></textarea>
                                 </div>
                             </li>
-                            <li>
-
-                            </li>
-                            <li>
-
-                            </li>
-                            <li>
-
-                            </li>
-                            <li>
-
-                            </li>
-                            <li>
-
-                            </li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
                             <li class="button_li">
-                                <button type="button" class="buttonstyle board_move_go pointer"
-                                        onclick="scheduleAdd();">일정추가</button>
+                                <button type="button" class="buttonstyle board_move_go pointer" onclick="scheduleAdd();">일정추가</button>
                             </li>
                         </ul>
-
                     </div>
                 </form>
             </div>

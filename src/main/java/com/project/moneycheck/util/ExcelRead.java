@@ -12,9 +12,7 @@ import java.util.Map;
 
 public class ExcelRead {
     public static List<Map<String, String>> read(ExcelReadOption excelReadOption) {
-        //엑셀 파일 자체
-        //엑셀파일을 읽어 들인다.
-        //FileType.getWorkbook() <-- 파일의 확장자에 따라서 적절하게 가져온다.
+
         Workbook wb = ExcelFileType.getWorkbook(excelReadOption.getFilePath());
 
         //Sheet sheet = wb.getSheetAt(0); // 1번째 시트만 가져옴
@@ -36,7 +34,7 @@ public class ExcelRead {
          * put("B", "게임명");
          */
         Map<String, String> map = null;
-        /*
+        /**
          * 각 Row를 리스트에 담는다.
          * 하나의 Row를 하나의 Map으로 표현되며
          * List에는 모든 Row가 포함될 것이다.

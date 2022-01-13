@@ -16,7 +16,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
-<input id="book_no"  type="hidden" name="book_no" value="${param.book_no}">
 <jsp:include page="header.jsp"></jsp:include>
 <jsp:include page="sidebar.jsp"></jsp:include>
 

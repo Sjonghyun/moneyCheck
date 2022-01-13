@@ -26,9 +26,6 @@ public class UsersService {
         return usersMapper.loadUsers(book_no);
     }
 
-    public Users idPassword(String u_mail, String u_password){
-        return usersMapper.idPassword(u_mail, u_password);
-    }
     public void deleteUser(int u_no){
         usersMapper.deleteUser(u_no);
     }

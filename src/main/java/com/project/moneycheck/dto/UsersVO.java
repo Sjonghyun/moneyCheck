@@ -1,6 +1,5 @@
 package com.project.moneycheck.dto;
 
-import com.project.moneycheck.dto.AuthInfo;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)

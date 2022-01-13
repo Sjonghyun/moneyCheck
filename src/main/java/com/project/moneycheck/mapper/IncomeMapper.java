@@ -24,8 +24,6 @@ public interface IncomeMapper {
 
     ArrayList<Income> income_list(DateData dateData, @Param("book_no")int book_no);
 
-    int inCount(@Param("in_date") String in_date);
-
     List<IncomeVO> yearIn(@Param("book_no") int book_no);
     List<IncomeVO> monthIn(@Param("book_no") int book_no, @Param("date") String date);
     List<IncomeVO> dayIn(@Param("book_no") int book_no, @Param("date") String date);

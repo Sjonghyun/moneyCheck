@@ -19,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,9 +67,7 @@ public class SpendingController {
     @PostMapping("/delete_spending")
     @ResponseBody
     public String delete_spending(@RequestParam("sp_no")String sp_no, @RequestParam("book_no") String book_no, @RequestParam("year")String year, @RequestParam("month") String month){
-        System.out.println("@@@@@@@@@@@@@@@@@@" + sp_no);
         spendingService.delete_spending(Integer.parseInt(sp_no));
-        System.out.println("삭제 진행");
         return "redirect:/insert_spend?book_no="+book_no+"&year="+year+"&month="+month;
     }
 
@@ -88,7 +85,6 @@ public class SpendingController {
         try{
             excelFile.transferTo(destFile);
         }catch(IllegalStateException | IOException e){
-//            throw new RuntimeException(e.getMessage(),e);
             e.printStackTrace();
         }
 

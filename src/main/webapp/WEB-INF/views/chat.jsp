@@ -14,7 +14,6 @@
     <link href="/resources/css/chat.css" rel="stylesheet">
     <link href="/resources/css/style.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <meta charset="UTF-8">
     <title>Chating</title>
 </head>

@@ -61,30 +61,6 @@ public class ExcelCellRef {
             default:
                 value = cell.getStringCellValue();
         }
-//        else {
-//            if( cell.getCellType() == Cell.CELL_TYPE_FORMULA ) {
-//                value = cell.getCellFormula();
-//            }
-//            else if( cell.getCellType() == Cell.CELL_TYPE_NUMERIC ) {
-//                value = cell.getNumericCellValue() + "";
-//            }
-//            else if( cell.getCellType() == Cell.CELL_TYPE_STRING ) {
-//                value = cell.getStringCellValue();
-//            }
-//            else if( cell.getCellType() == Cell.CELL_TYPE_BOOLEAN ) {
-//                value = cell.getBooleanCellValue() + "";
-//            }
-//            else if( cell.getCellType() == Cell.CELL_TYPE_ERROR ) {
-//                value = cell.getErrorCellValue() + "";
-//            }
-//            else if( cell.getCellType() == Cell.CELL_TYPE_BLANK ) {
-//                value = "";
-//            }
-//            else {
-//                value = cell.getStringCellValue();
-//            }
-//        }
-
         return value;
     }
 
